@@ -20,7 +20,7 @@ Et c'est avec ce compte que nous allons justement toucher le jackpot ...
 
 Pour se connecter à notre compte Microsoft, plein de méthodes. Mais vu que nous souhaitons bénificier d'Office, connectons-nous sur [office.com](https://office.com), puis identifions-nous avec notre identifiant monlycee.net :
 
-![loginoffice](../img\loginoffice.png)
+![loginoffice](../img/loginoffice.png)
 
 Notre mot de passe est celui de notre ENT.
 
@@ -28,7 +28,7 @@ Notre mot de passe est celui de notre ENT.
 
 Et voici !
 
-![officehomepage](../img\officehomepage.png)
+![officehomepage](../img/officehomepage.png)
 
 Nous voici sur notre Office365 :happy: 
 
