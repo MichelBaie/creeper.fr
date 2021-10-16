@@ -227,7 +227,7 @@ iptables -X
 iptables -t nat -F
 iptables -t nat -X
 echo "tout propre"
-ifconfig <eth0> <IPFailover>
+ifconfig <eth0> <IPFailover>/32
 iptables -t nat -A POSTROUTING -p udp --sport <PortWireGuard> -d <IPFailover> -o eth0 -j SNAT --to-source <IpLanVPN.1>:<PortWireGuard>
 iptables -t nat -A POSTROUTING -s <IpLanClientVPN> -j SNAT -o eth0 --to-source <IPFailover>
 iptables -t nat -A PREROUTING -p udp --dport <PortWireGuard> -d <IPFailover> -i eth0 -j DNAT --to-destination <IpLanVPN.1>:<PortWireGuard>
