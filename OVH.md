@@ -1,14 +1,14 @@
 ## Avoir des IP Failover OVH chez soi (grâce à Wireguard)
 
+```
 ⚠ Une mise à niveau de ce tutoriel est nécessaire pour :
 
 * l'arrivée de Debian 11,
 
-* l'IPV6 
-
 * et Wireguard nativement dans le kernel linux 5.10>
 
 Ces sujets peuvent donc ne pas être complets et je vous conseille de les ignorer tant que cet avertissement persiste. ⚠
+```
 
 Hey !
 
@@ -18,7 +18,7 @@ Grâce à mes **IP Failover**, j'évite de donner celle de ma box qui est vulné
 
 Si vous souhaitez faire la même chose que moi, vous êtes au bon endroit.
 
-C'est compatible Windows, Linux et tout autre étant donné que [WireGuard](https://www.wireguard.com) est un VPN d'Avenir qui est désormais [inclut dans beaucoup de kernels](https://www.nextinpact.com/lebrief/42075/11832-vpn---wireguard-passe-en-version-1-0-et-integre-le-noyau-linux-5-6).
+C'est compatible Windows, Linux et tout autre étant donné que [WireGuard](https://www.wireguard.com) est un [VPN d'Avenir](https://www.google.com/search?q=wireguard&tbm=nws) qui est désormais inclut dans beaucoup de kernels.
 
 ### 1 - Commençons par commander un VPS OVH
 
@@ -173,16 +173,17 @@ Client's WireGuard IPv4: 10.66.66.2
 
 Ici il nous demande son IP sur le LAN, donc laissez par défaut et tout se passera bien. Mais **notez-le** quand même.
 
-*Edit* : J'ai trouvé un petit bug que j'ai oublié de patch jusqu'ici !
 Quand vous avez fini la commande, n'oubliez pas de faire :
 
+`touch /etc/rc.local`
+`chmod +x /etc/rc.local`
 `nano /etc/wireguard/wg0.conf`
 
-et de retirer (ctrl +k) les lignes suivantes : 
+Et remplacez le postUp, postDown par :
 
 ```
-PostUP = xxxx
-PostDown = xxxx
+PostUp = ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; bash /etc/rc.local
+PostDown = ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 ```
 
 Puis sauvegardez le fichier. Et on relance WireGuard : 
@@ -228,27 +229,25 @@ iptables -t nat -F
 iptables -t nat -X
 echo "tout propre"
 ifconfig <eth0> <IPFailover>/32
-iptables -t nat -A POSTROUTING -p udp --sport <PortWireGuard> -d <IPFailover> -o eth0 -j SNAT --to-source <IpLanVPN.1>:<PortWireGuard>
-iptables -t nat -A POSTROUTING -s <IpLanClientVPN> -j SNAT -o eth0 --to-source <IPFailover>
-iptables -t nat -A PREROUTING -p udp --dport <PortWireGuard> -d <IPFailover> -i eth0 -j DNAT --to-destination <IpLanVPN.1>:<PortWireGuard>
-iptables -t nat -A PREROUTING  -d <IPFailover> -i eth0 -j DNAT --to-destination <IpLanClientVPN>
+iptables -t nat -A POSTROUTING -p udp --sport <PortWireGuard> -d <IPFailover> -j SNAT --to-source <IpLanVPN.1>:<PortWireGuard>
+iptables -t nat -A POSTROUTING -s <IpLanClientVPN> -j SNAT --to-source <IPFailover>
+iptables -t nat -A PREROUTING -p udp --dport <PortWireGuard> -d <IPFailover> -j DNAT --to-destination <IpLanVPN.1>:<PortWireGuard>
+iptables -t nat -A PREROUTING  -d <IPFailover> -j DNAT --to-destination <IpLanClientVPN>
 ```
 
 Je vous explique ce que signifie chacun des arguments <> à remplacer :
 
 * `<eth0:0>` : Pour commencer par la première IP vous pouvez noter **eth0:0** mais à chaque ip de rajoutée : **toujours incrémenter** **eth0:1 eth0:2 eth0:3**
 
-* `<IPFailover>` : Il s'agit de l'IP OVH que vous venez d'acheter.
+* `<IPFailover>`/32 : Il s'agit de l'IP OVH que vous venez d'acheter.
 * `<PortWireGuard>` : Le port WireGuard que je vous ai demandé de noter au dessus.
 * `<IpLanVPN.1>` : L'adresse ip du serveur WireGuard (*Server's WireGuard IPv4*)
 * `<IpLanClientVPN>` : L'IP Lan que vous avez associé à la VM lors du setup interactif de WireGuard.
 
-Et on oublie surtout pas le `#!/bin/bash` au tout début pour bien lui dire que c'est un script bash.
-
 On sauvegarde notre fichier avec CTRL X + Y + Entrée et on fais la commande ci-dessous pour lui donner des perms exécutions.
 `chmod +x /etc/rc.local`
 
-On peut maintenant exécuter notre script (bash /etc/rc.local) et notre transit réseau est désormais prêt.
+On peut maintenant exécuter notre script (`bash /etc/rc.local`) et notre transit réseau est désormais prêt.
 
 #### Nettoyer nos clients Wireguard
 
@@ -281,11 +280,7 @@ Endpoint = 51.210.39.37:59622
 AllowedIPs = 0.0.0.0/0,::/0
 ```
 
-Je n'ai pas les même valeurs mais la forme du fichier est la même que vous. Ici, je vais retirer en haut `,fd42:42:42::2/128` (n'oubliez pas la virgule) car je n'ai pas besoin d'ipv6 et également en dessous `,::/0`
-
-*Edit : On s'est pris plein d'attaques et on a trouvé une solution :3*
-
-Quand on se prenais des attaques DDOS, tout le Traffic des clients VPN passaient par l'IP principale du VPS : GRAVE ERREUR ! Si celle-ci se fais attaquer, alors tout le réseau est en panne. Pour cela, il vous suffit de modifier le Endpoint = `<ipvps>` par `<ipfailover>`.
+L'adresse ip Endpoint (51.210.39.37 dans l'exemple ci-dessus), doit être remplacée par l'ip Failover de notre profil. Cela va nous permettre d'éviter de se prendre des attaques ddos de manière généraliste. Seulement 1 service tombera au lieu de tous.
 
 Une fois ceci fait, on peut maintenant sauvegarder notre fichier et c'est bon on a notre profil qui est tout beaucoup tout propre.
 
@@ -319,7 +314,7 @@ Par défaut avec la commande enable, le service wireguard montera et démarrera 
 
 C'est bon ! Vous avez tout en main pour déployer des ips OVH. Néanmoins je vais quand même vous rappeler les commandes nécessaires pour déployer d'autres profils.
 
-Déjà n'oubliez pas d'être root, car tout se passe en root pour la commande `./wireguard-install.sh`
+Déjà n'oubliez pas d'être root, car tout se passe en root pour la commande `bash wireguard-install.sh`
 
 ```bash
 It looks like WireGuard is already installed.
@@ -334,7 +329,7 @@ Select an option [1-4]:
 
 Sélectionnez 1 afin de déployer un nouveau profil.
 
-Dans le setup il vous demandera a un moment l'ip locale du client, il faut mettre une ip qui n'est Ducoup pas utilisée. Tout à l'heure j'ai pris 192.168.23.2, il faudra donc mettre 192.168.23.3 etc ...
+Dans le setup il vous demandera a un moment l'ip locale du client, il faut mettre une ip qui n'est Ducoup pas utilisée. Tout à l'heure j'ai pris 10.66.66.2, il faudra donc mettre 10.66.66.3 etc ...
 
 Une fois le setup terminé, le profil sera disponible dans le dossier /root
 
@@ -343,7 +338,7 @@ Puis copier les règles iptables et remplacer l'ip failover et locale par la nou
 
 ### Infos Pratique
 
-Si vous avez besoin de déployer wireguard sur des containers LXC suivez [ce tutoriel](https://nixvsevil.com/posts/wireguard-in-proxmox-lxc/)
+Si vous avez besoin de déployer WireGuard sur des containers LXC suivez [ce tutoriel](http://web.archive.org/web/20210826175543/https://nixvsevil.com/posts/wireguard-in-proxmox-lxc/)
 
 Je rajouterais d'autres infos ici au fur et à mesure des remarques qu'on me fera sur ce tutoriel.
 
@@ -355,3 +350,4 @@ Merci d'avoir suivi ce tutoriel, espère que celui vous aura été utile (pour m
 Le but de mon site c'est tout ce tutoriel : des trucs utiles qui peuvent servir a tout le monde.
 
 Merci à [Mael](https://github.com/maelmagnien) d'avoir Patch certains bugs dans le tuto.
+
