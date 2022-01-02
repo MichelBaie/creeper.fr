@@ -82,7 +82,7 @@ IPv4 or IPv6 public address: <ipvps>
 ```
 
 ```bash
-Public interface: eth0
+Public interface: ens3
 ```
 
 ```bash
@@ -91,6 +91,10 @@ WireGuard interface name: wg0
 
 ```
 Server's WireGuard IPv4: 10.66.66.1
+```
+
+```
+Server's WireGuard IPv6: fd42:42:42::1
 ```
 
 ```
@@ -117,6 +121,10 @@ Ici, pour lui donner un nom facile à reconnaitre je vais l'appeler **MaVM**, ma
 Client's WireGuard IPv4: 10.66.66.2
 ```
 
+```
+Client's WireGuard IPv6: fd42:42:42::2
+```
+
 Il nous demande ici une ip (qui sera incrémentée pour les futurs clients), on la retirera plus tard, laissez là comme elle est.
 
 Une fois toute cette installation terminée, nous allons pouvoir nettoyer un peu ce que ce script à généré. Il est initialement conçu pour router tout le traffic de nos profils sur l'IP du VPS, ce qui n'est pas vraiment ce que nous souhaitons.
@@ -128,8 +136,8 @@ nano /etc/wireguard/wg0.conf
 Puis remplacez les lignes actuelles de PostUp et PostDown par :
 
 ```
-PostUp = ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+PostUp = ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o ens3 -j MASQUERADE
+PostDown = ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o ens3 -j MASQUERADE
 ```
 
 Une fois ceci fait, nous allons également ajuste quelques réglages de notre réseau linux pour autoriser le passage des paquets un peu partout :
@@ -143,9 +151,14 @@ Puis rajoutez les lignes suivantes tout en haut du fichier :
 ```
 net.ipv4.ip_forward=1
 net.ipv4.conf.all.proxy_arp=1
+
 ```
 
-Une fois ceci fait, nous pouvons appliquer avec : **sysctl -p**
+Une fois ceci fait, nous pouvons appliquer avec : 
+
+```
+sysctl -p
+```
 
 ## 4 - Fabriquons nos profils WireGuard
 
@@ -259,4 +272,4 @@ Je tiens à remercier :
 Et plein d'autres personnes qui m'ont envoyé un message sur Discord pour m'aider à améliorer cette documentation ou me remercier.
 De plus, il existe sur Github des scripts et interfaces Web qui simplifient ma documentation réalisés également par la communauté.
 
-Merci d'avoir s
+Merci d'avoir suivi ce tutoriel.
