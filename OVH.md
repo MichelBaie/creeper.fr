@@ -310,7 +310,7 @@ Normalement si vous faites un `curl ifconfig.me` vous devriez voir l'ip failover
 
 Par défaut avec la commande enable, le service wireguard montera et démarrera au démarrage afin d'avoir aucune commande supplémentaire pour monter notre interface.
 
-### Ajouter des autres IP supplémentaires
+### Ajouter d'autres IP supplémentaires
 
 C'est bon ! Vous avez tout en main pour déployer des ips OVH. Néanmoins je vais quand même vous rappeler les commandes nécessaires pour déployer d'autres profils.
 
