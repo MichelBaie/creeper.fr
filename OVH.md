@@ -1,119 +1,78 @@
-## Avoir des IP Failover OVH chez soi (grâce à Wireguard)
+# Avoir des IPs chez soi. (OVH + WireGuard)
 
-```
-⚠ Une mise à niveau de ce tutoriel est nécessaire pour :
+J'ai récupéré chez moi un **serveur** sur lequel j'ai installé **[ESXi](https://customerconnect.vmware.com/fr/web/vmware/evalcenter?p=free-esxi7)**, un **hyperviseur** qui me permet de **créer plein de machines virtuelles**. Dans ces machines virtuelles **j'héberge divers services** pour moi et pour d'autres.
 
-* l'arrivée de Debian 11,
+Seulement, avec **une seule IP** (résidentielle), je suis **vite limité** par le **nombre de ports** à ma disposition et le **nombre de services** que je souhaite faire tourner dans les **meilleures conditions**.
 
-* et Wireguard nativement dans le kernel linux 5.10>
+J'ai donc ducoup cherché **un moyen d'avoir des IP chez moi**, **dédiées**, **protégées** par un **Anti-DDOS** et **peu cher**. Je n'avais jusqu'ici pas trouvé de résultat convenable, qui fonctionne bien, qui est modulaire, j'ai donc décidé d'en **fabriquer un**. 
 
-Ces sujets peuvent donc ne pas être complets et je vous conseille de les ignorer tant que cet avertissement persiste. ⚠
-```
+*Je précise que je ne suis pas un expert réseau, pour certaines personnes cette technique peut sembler sale ou incomplète, mais pour mon utilité elle est parfaite.* *De plus, ce tuto est une seconde version grâce à la contribution de beaucoup de personnes qui m'ont aidé à avoir un résultat très qualitatif et stable, ils sont mentionnés à la fin de cet article.*
 
-Hey !
+## 1 - Les pré-requis
 
-J'ai un serveur chez moi, et j'ai besoin d'IP...
+* Un **[VPS OVH](https://www.ovhcloud.com/fr/vps/)** (C'est plus pratique, je ne ferais **pas de support pour les autres hébergeurs**)
+* **1 ou plusieurs IP Failover** (Elles coûtent **2€50 l'unité**, **une seule fois**, et sont **possédées** **jusqu'à l'expiration du VPS**)
+* **Debian 11>** ou Ubuntu 21> (Du moment qu'on a un **Kernel Linux 5.10>**, qui supporte **nativement** **WireGuard**)
+* **Un bon ping** (C'est préférable pour la **qualité** de notre **réseau**)
 
-Grâce à mes **IP Failover**, j'évite de donner celle de ma box qui est vulnérable, et je donne celle **d'OVH** [protégée par leur petite protection DDOS](https://www.ovh.com/fr/anti-ddos/technologie-anti-ddos.xml).
+*Justifications :*
 
-Si vous souhaitez faire la même chose que moi, vous êtes au bon endroit.
+* **J'ai choisi [OVH](https://www.ovhcloud.com/fr/)**, car c'est l'un des seuls (ou **le seul** ?) **hébergeur français** à **proposer** des **adresses IP pour 2€50 à vie**, ce qui **réduit fortement** nos **coûts mensuels**, pour un **service fiable** et qui **inclut** un **[Anti-DDOS basique](https://www.ovh.com/fr/anti-ddos/)**.
+* **J'ai choisi [WireGuard](https://www.wireguard.com/)** pour notre **tunnel**, un **protocole VPN** qui utilise de **l'UDP**. Il est **compatible** avec **énormément de plateformes**, est **extrêmement léger**, très **facile à déployer** et beaucoup plus **performant** que ses concurrents, tout en restant **sécurisé**. C'est un petit **nouveau** qui viens d'arriver dans le domaine de l'**open-source** et qui as fait ses preuves chez moi ces deux dernières années.
+* **La qualité de l'interconnexion dépendra de votre réseau**, WireGuard **ne nécessite pas une bonne connexion internet**, et **ne réduira pas votre débit**. Cependant, vous devrez rajouter le **ping** entre vous → OVH et OVH → vous.
+* **Debian 11>** et **Ubuntu 21>** **intègrent** enfin **WireGuard** dans **leurs kernels linux natifs** en **production**, ce qui va **réduire** les **commandes** **nécessaires au déploiement**.
 
-C'est compatible Windows, Linux et tout autre étant donné que [WireGuard](https://www.wireguard.com) est un [VPN d'Avenir](https://www.google.com/search?q=wireguard&tbm=nws) qui est désormais inclut dans beaucoup de kernels.
+![](https://korben.info/app/uploads/2020/02/bench.png)
 
-### 1 - Commençons par commander un VPS OVH
+#### **⚠ Il faut obligatoirement que vous utilisiez Debian 11. ⚠**
 
-Pourquoi j'ai choisi **OVH** ?
+## 2 - Achetons notre VPS
 
-Le triste gros avantage d'OVH c'est que c'est (à ma connaissance) le seul hébergeur français à proposer l'achat d'**IP Failover à** **2€50 à vie** (tant que le service reste actif). Cela va nous permettre de réaliser de **sérieuses économies** au bout d'un an.
+**Voici la grille tarifaire d'OVH (au 02/01/2022) :**
 
-Maintenant il faut également comparer un **VPS** et une offre **Public Cloud** : deux offres proposées par OVH qui sont idéales pour notre utilisation.
+| Édition              | Starter    | Value      | Essential  | Comfort  | Elite    |
+| -------------------- | ---------- | ---------- | ---------- | -------- | -------- |
+| *Prix mensuel (TTC)* | 3,60€      | 6€         | 12€        | 24€      | 33,12€   |
+| *Bande passante*     | 100 Mbit/s | 250 Mbit/s | 500 Mbit/s | 1 Gbit/s | 2 Gbit/s |
+| *Stockage SSD*       | 20 Go      | 40 Go      | 80 Go      | 160 Go   | 160 Go   |
 
-- L'avantage d'un [VPS](https://www.ovhcloud.com/fr/vps/compare/) c'est que les offres commencent directement à partir de **débits supérieurs à 100MB/S** : Si vous faites tourner un **RDP Windows** les téléchargements seront **limités** à ce débit. Cependant, la qualité du réseau sera tout aussi stable.
-- L'avantage d'un [Public Cloud](https://www.ovhcloud.com/fr/public-cloud/prices/#388) c'est qu'il est **très flexible**, **les prix sont très bas** et le débit est de **minimum 100MB/S** : Si vous souhaitez faire tourner **du web** ou du **serveur Minecraft**, ne nécessitant **pas trop de débit** mais seulement **du ping**.
+Toutes ces offres **peuvent supporter jusqu'à 16 IP Failovers** (**par VPS**). **Pour en avoir plus** **il faudra** dépenser plus et souscrire **[un serveur dédié](https://www.soyoustart.com/fr/)** qui devrait avoir une **meilleure protection Anti-DDOS** !
 
-Voici un petit tableau des prix si vous avez besoin de comparer rapidement :
+**Pendant que vous achetez le VPS**, je vous demande de **choisir l'OS Debian 11**. Il est conçu pour être **stable** et **à jour**. De plus, **certaines choses** dans la **suite du Tuto** **peuvent varier en fonction de la distribution linux** que vous choisissez.
 
-| s1-2 (Public Cloud Sandbox) | VPS Value        | VPS Essential     | VPS Confort       |
-| --------------------------- | ---------------- | ----------------- | ----------------- |
-| 100 MB/S                    | 250 MB/S         | 500 MB/S          | 1 GB/S            |
-| 2.99€ HT (par mois)         | 5€ HT (par mois) | 10€ HT (par mois) | 20€ HT (par mois) |
+**Une fois que vous avez acheté votre VPS**, prenez **directement** une **IP Failover** (**Bare Metal Cloud** → **IP** → **Commander des IP additionnelles**), et **sélectionnez bien le bon VPS**. Il vous sera donné un lien avec l'état de la commande. **Quand vous aurez reçu le mail de confirmation**, nous pourrons **continuer**.
 
-Je précise qu'on a **pas besoin de gros** **CPU** ou **RAM**, seulement de réseau car WireGuard est **très léger**.
-J'ai **personnellement choisi le tout premier public cloud** : *s1-2*
+#### ⚠ Il est important d'avoir (au moins) une IP Failover de disponible pour la suite du tutoriel. ⚠
 
-### 2 - Installons notre VPS
+## 3 - Installons notre VPS
 
-Dans ce tutoriel, je vais utiliser **Debian 10**, cela peut changer certaines choses comme le login SSH ou autre, mais prenez le même que moi au moins on sera sûr d'avoir des choses identiques.
-⚠ **Utilisez Debian 10 pour être sûr d'être 100% compatible : Le tuto peut ne pas fonctionner ou bien manquer de repos sur d'autres distrib.** ⚠ 
+**Connectez-vous en SSH** à l'aide des **identifiants** qui vous ont été **envoyés par email**.
 
-Voici une petite liste des trucs à faire après avoir reçu notre service :
-
-- Retirer le kernel cloud pas compatible WireGuard
-
-- Installer WireGuard et ses dépendances
-
-- Installer nos IP Failover et quelques règles IPTables
-
-- Créons notre tout premier profil WireGuard
-
-
-#### Retirer le Kernel Cloud
-
-Connectez-vous en SSH avec de super clients comme [Termius](https://termius.com/) (désolé la team [MobaXTerm](https://mobaxterm.mobatek.net/)) et commençons.
-
-Vous avez normalement reçu par email les identifiants. Si vous avez choisit debian 10 (**ce qu'il faut choisir hein**) le login est `debian` et le mot de passe auto-généré.
-
-```
-sudo su -
-apt purge linux-image-$(uname -r)
-```
-
-Ici, on retire tout les kernels installés sur notre VPS, si vous redémarrez sans avoir terminé les prochaines commandes, le VPS ne démarrera plus donc évitez :/ C'est d'ailleurs pour cela qu'une **pop-up demande si oui ou non** ne devons annuler. **Il faut répondre NON**.
-On peut juste après installer le dernier kernel tout propre avec les commandes suivantes :
-
-```
-apt update
-apt install linux-image-amd64 linux-headers-amd64
-```
-
-Une fois notre nouveau kernel d'installé, on peut redémarrer notre VPS avec la commande :
-
-```
-reboot
-```
-
-On peut se reconnecter et le mettre à jour :
-
-```
-apt update
-apt full-upgrade
-reboot
-```
-
-Une fois toutes ces commandes terminées, le VPS aura redémarré à la dernière version ! On est fin prêt pour continuer :)
-
-#### Installer WireGuard sur notre VPS
-
-Maintenant que notre kernel est prêt il nous reste plus qu'a utiliser un script déjà tout fait par la communauté de la toile !
-
-Ajoutons d'abord nos repos (pour Debian 10) :
+Commençons par une **mise à jour de l'OS** :
 
 ```bash
-sh -c "echo 'deb http://deb.debian.org/debian buster-backports main contrib non-free' > /etc/apt/sources.list.d/buster-backports.list"
-apt update
+sudo su -
+apt update && apt upgrade -y
+reboot
 ```
 
+Une fois le redémarrage terminé, **installons les dépendances nécessaires** :
 
-Voici les commandes à exécuter pour tout préparer et lancer notre installation :
-
+```bash
+sudo su -
+apt install wireguard wireguard-tools resolvconf bash curl wget -y
 ```
-apt install curl bash sudo wget resolvconf wireguard-tools wireguard-dkms dkms wireguard -y
+
+Une fois ceci fait, nous pouvons maintenant **préparer notre serveur WireGuard**.
+Pour cela, j'ai choisi d'utiliser un [script maintenu par quelqu'un sur GitHub](https://github.com/angristan/wireguard-install) qui **crée un tunnel** et génère facilement des profils :
+
+```bash
 curl -O https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh
 chmod +x wireguard-install.sh
-./wireguard-install.sh
+bash wireguard-install.sh
 ```
 
-Une fois ceci fait il va lancer notre petit setup interactif :
+Une fois ceci fait il va lancer un **petit setup interactif** :
 
 ```bash
 Welcome to the WireGuard installer!
@@ -125,229 +84,197 @@ You can leave the default options and just press enter if you are ok with them.
 IPv4 or IPv6 public address: <ipvps>
 ```
 
-Au dessus il demande l'IP publique du VPS, par défaut il devrais bien la détecter donc laissons-là.
-
 ```bash
-Public interface: eth0
+Public interface: ens3
 ```
-
-On laisse l'interface réseau d'écoute par défaut.
 
 ```bash
 WireGuard interface name: wg0
 ```
 
-Toujours laisser l'interface WireGuard par défaut.
-
 ```
 Server's WireGuard IPv4: 10.66.66.1
 ```
 
-Ici, il nous demande lequel sera notre réseau virtuel WireGuard. Il faut que ce réseau **ne sois pas utilisé dans votre LAN**, donc ne remplissez pas par votre réseau local, laissez les valeurs par défaut qui marcheront très bien.
-Pour l'IPV6 oublions, OVH ne commercialise pas encore d'IPV6 Failover 🤔
+```
+Server's WireGuard IPv6: fd42:42:42::1
+```
 
 ```
 Server's WireGuard port [1-65535]: XXXXXX
 ```
-
-Ici, il nous demande le port d'écoute de WireGuard, **notez-le**, on en aura besoin pour plus tard.
+**Ne touchez pas aux premières options**, elles sont très bien autogénérées et on risque de modifier plusieurs choses par la suite.
 
 ```
 First DNS resolver to use for the clients: 176.103.130.130
 Second DNS resolver to use for the clients (optional): 176.103.130.130
 ```
 
-Utilisons les meilleurs DNS (chacun son avis) : ceux de [CloudFlare](https://1.1.1.1/) : `1.1.1.1, 1.0.0.1`
+**Je vous recommande** les DNS de [CloudFlare](https://1.1.1.1/) : `1.1.1.1, 1.0.0.1`
 
-Une fois tout ce QCM de remplis, il va tout préparer et nous demandera ensuite le nom de notre tout premier client.
+**Une fois** tout ce QCM de remplis, **il va tout préparer** et nous **demandera** ensuite **le nom de notre tout premier client**.
 
-```
+```bash
 Client name: MaVM
 ```
 
-Ici, pour lui donner un nom facile à reconnaitre je vais l'appeler **MaVM**, mais vous pouvez l'appeler comme vous souhaitez.
+Ici, pour lui donner un nom facile à reconnaitre je vais l'appeler **MaVM**, mais vous pouvez l'appeler comme vous le souhaitez.
 
-```
+```bash
 Client's WireGuard IPv4: 10.66.66.2
 ```
 
-Ici il nous demande son IP sur le LAN, donc laissez par défaut et tout se passera bien. Mais **notez-le** quand même.
-
-Quand vous avez fini la commande, n'oubliez pas de faire :
-
-`touch /etc/rc.local`
-`chmod +x /etc/rc.local`
-`nano /etc/wireguard/wg0.conf`
-
-Et remplacez le postUp, postDown par :
-
 ```
-PostUp = ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; bash /etc/rc.local
-PostDown = ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+Client's WireGuard IPv6: fd42:42:42::2
 ```
 
-Puis sauvegardez le fichier. Et on relance WireGuard : 
+**Il nous demande ici une ip** (qui sera incrémentée pour les futurs clients), on la retirera plus tard, **laissez là comme elle est.**
+
+**Une fois cette pré-installation terminée**, nous allons pouvoir **nettoyer** ce que ce script à généré. Il est initialement conçu pour router tout le traffic de nos profils sur l'IP du VPS, ce qui n'est pas vraiment ce que nous souhaitons.
+
+```bash
+nano /etc/wireguard/wg0.conf
+```
+
+Puis **remplacez** les lignes actuelles de PostUp et PostDown **par** :
 
 ```
+PostUp = ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o ens3 -j MASQUERADE
+PostDown = ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o ens3 -j MASQUERADE
+```
+
+Une fois ceci fait, nous allons également **ajuster quelques réglages** de notre **réseau** **linux** pour autoriser le passage des **paquets** un peu partout :
+
+```bash
+nano /etc/sysctl.conf
+```
+
+Puis **rajoutez** les lignes suivantes tout en haut du fichier :
+
+```
+net.ipv4.ip_forward=1
+net.ipv4.conf.all.proxy_arp=1
+```
+
+Une fois ceci fait, nous pouvons **appliquer** avec : 
+
+```
+sysctl -p
+```
+
+## 4 - Fabriquons nos profils WireGuard
+
+Le Script **à déjà créé** un premier profil (MaVM), **mais** il va maintenant falloir **l'ajuster** pour qu'il ai **sa bonne IP Failover**.
+Je précise qu'**à partir, d'ici ce sera la même chose pour n'importe quel profil généré** à l'aide du script.
+*Pour regénérer un autre profil : `bash wireguard-install.sh`*
+
+**Adaptons** déjà les paramètres **du côté serveur** :
+
+```bash
+nano /etc/wireguard/wg0.conf
+```
+
+```
+### Client MaVM
+[Peer]
+PublicKey = jeSuiSuNeCléeVrAimeNtTrèsComPliquÉe==
+PresharedKey = jeSuiSuNeCléepArtAgéEVrAimeNtTrèsComPliquÉe==
+AllowedIPs = 10.66.66.2/32,fd42:42:42::2/128
+```
+
+**Ce qui nous intéresse ici**, ce sont les **AllowedIPs**, ce sont les **adresses IP** qui ont été **attribuées** **pour le profil** MaVM. **Modifions celle-ci** en **retirant l'IP locale** (**10.66.66.2/32**) et en **rajoutant l'IP FO OVH** (par exemple : **92.122.45.218**) . Cela devrais **nous donner** ceci :
+
+```
+AllowedIPs = 92.122.45.218/32,fd42:42:42::2/128
+```
+
+Je précise que **sur un VPS il est important de mettre un /32 à la fin de l'IP** pour ne pas avoir de problèmes de routage.
+Je préfère également **conserver l'IPV6** (qui sera celle du VPS) pour avoir une **navigation plus moderne** sur le Web !
+
+**Une fois cette modification réalisée**, nous pouvons sauvegarder puis **effectuer la même du côté de notre client**.
+Dans notre dossier nous devrions avoir un `wg0-client-MaVM.conf`, **modifions-le** !
+
+```
+nano wg0-client-MaVM.conf
+```
+
+```
+[Interface]
+PrivateKey = jeSuiSuNeCléeVrAimeNtTrèsComPliquÉe==
+Address = 10.66.66.2/32,fd42:42:42::3/128
+DNS = 1.1.1.1,1.0.0.1
+
+[Peer]
+PublicKey = jeSuiSuNeCléeVrAimeNtTrèsComPliquÉe==
+PresharedKey = jeSuiSuNeCléepArtAgéEVrAimeNtTrèsComPliquÉe==
+Endpoint = 54.39.36.154:55563
+AllowedIPs = 0.0.0.0/0,::/0
+```
+
+Ici également il faut **remplacer** à côté de **Address**, **l'IP Locale** **par** **l'IP Failover** (avec le **/32** à la fin !). Cela devrais **nous donner** ceci :
+
+```
+Address = 92.122.45.218/32,fd42:42:42::3/128
+```
+
+Une fois ce profil modifié et nos deux configurations sauvegardées, **je vous demande** (**pour la première installation**) de **reboot** le VPS.
+**Si ce n'est pas** la première fois, **un simple redémarrage** du service WireGuard **suffira** :
+
+```bash
 systemctl stop wg-quick@wg0
 systemctl start wg-quick@wg0
 ```
 
-Une fois les commandes terminées, il est possible que quelques erreurs soient survenues et est préférable de redémarrer le VPS.
+Si après tout ce que nous avons fait, la commande `systemctl status wg-quick@wg0` ne vous donne pas d'erreur alors **tout est prêt** !
 
-#### Configurons nos IP Failover
+## 5 - Déployons nos profils WireGuard :rocket:
 
-Maintenant il va falloir passer à la caisse. Achetons une IP Failover et lions là a notre service OVH.
+Et voici ! 
 
-###### Pour Public Cloud : 
+Notre profil est **maintenant prêt à être déployé** sur n'importe quelle plateforme (**Windows**, **Linux**, **Android**, **MacOS**, **IOS**, et **plein d'autres** !)
 
-Rendez-vous dans la sections Failover IP sur l'espace public cloud, il vous proposera de créer un réseau (sans frais). Cela peut prendre jusqu'à 10 minutes. -+N'hésitez pas à actualiser la page, l'espace client est plutôt mou.
-Une fois qu'on a notre réseau il vous proposera d'acheter des IP Failover dans la catégorie actions. (Liez la bien au bon service)
-Suivez les instructions, payez et une facture vous sera générée. Il faudra attendre jusqu'à 10 minutes (ou le lendemain si vous commandez tard le soir) avant d'avoir enfin reçu son IP.
-Une fois reçue, elle devrais apparaître dans la section IP Failover.
-
-###### Pour VPS : 
-
-Rendez-vous sur [l'espace client ovh dans la section server puis ip](https://www.ovh.com/manager/dedicated/#/configuration/ip?tab=ip) puis cliquez sur commander des IP additionnelles. Suivez les instructions et votre IP sera bien linkée sur votre VPS. N'oubliez pas de payer la facture sinon elle n'arrivera jamais et le temps d'attente est en général de 10 minutes ou le lendemain si vous commandez tard le soir.
-
-Maintenant que nous possédons nos adresses IP il va falloir les monter car OVH adore nous compliquer les choses 🤡
-
-J'ai opté pour la solution du **rc.local** : Au démarrage il monte tout.
-
-Modifions notre fichier avec la commande :
-
-`nano /etc/rc.local`
-
-Voici les 5 magnifiques lignes qui vont nous aider à router tout notre Traffic réseau dans le bon sens :
-
-```bash
-#!/bin/bash
-echo "Oust" # ICI on nettoie si vous utilisez docker retirez les lignes qui suivent
-iptables -F
-iptables -X
-iptables -t nat -F
-iptables -t nat -X
-echo "tout propre"
-ifconfig <eth0> <IPFailover>/32
-iptables -t nat -A POSTROUTING -p udp --sport <PortWireGuard> -d <IPFailover> -j SNAT --to-source <IpLanVPN.1>:<PortWireGuard>
-iptables -t nat -A POSTROUTING -s <IpLanClientVPN> -j SNAT --to-source <IPFailover>
-iptables -t nat -A PREROUTING -p udp --dport <PortWireGuard> -d <IPFailover> -j DNAT --to-destination <IpLanVPN.1>:<PortWireGuard>
-iptables -t nat -A PREROUTING  -d <IPFailover> -j DNAT --to-destination <IpLanClientVPN>
-```
-
-Je vous explique ce que signifie chacun des arguments <> à remplacer :
-
-* `<eth0:0>` : Pour commencer par la première IP vous pouvez noter **eth0:0** mais à chaque ip de rajoutée : **toujours incrémenter** **eth0:1 eth0:2 eth0:3**
-
-* `<IPFailover>`/32 : Il s'agit de l'IP OVH que vous venez d'acheter.
-* `<PortWireGuard>` : Le port WireGuard que je vous ai demandé de noter au dessus.
-* `<IpLanVPN.1>` : L'adresse ip du serveur WireGuard (*Server's WireGuard IPv4*)
-* `<IpLanClientVPN>` : L'IP Lan que vous avez associé à la VM lors du setup interactif de WireGuard.
-
-On sauvegarde notre fichier avec CTRL X + Y + Entrée et on fais la commande ci-dessous pour lui donner des perms exécutions.
-`chmod +x /etc/rc.local`
-
-On peut maintenant exécuter notre script (`bash /etc/rc.local`) et notre transit réseau est désormais prêt.
-
-#### Nettoyer nos clients Wireguard
-
-Par défaut le script n'est pas vraiment optimisé à cet usage. Nous allons donc prendre le client qu'il nous a gentiment générer et le pimper.
-Nous allons retirer l'IPV6 et changer la gateway VPN
-
-Celui-ci devrait être situé dans le dossier /root (par défaut quand on est root), il vous suffit donc simplement de faire la commande `ls`  et voici notre premier profil :
-
-```bash
-root@s1-2-gra7:~# ls
-wg0-client-MaVM.conf  wireguard-install.sh
-root@s1-2-gra7:~#
-```
-
-ici mon client est `wg0-client-MaVM.conf` mais vous devriez avoir un autre que vous avez définit juste avant.
-
-On va juste débroussailler quelques lignes dans celui-ci afin d'avoir un truc très propre.
-Ouvrons-le (`nano monprofil.conf`)
+Je vais vous faire un petit exemple de comment déployer sur linux :
 
 ```
-[Interface]
-PrivateKey = 8HNFm5fD7tE7kPCeJ7PUrRo7N/dhw1X1FPS3n79nZkw=
-Address = 192.168.23.2/32,fd42:42:42::2/128
-DNS = 1.1.1.1,1.0.0.1
+# Installer Wireguard (en étant sur Ubuntu 21> ou Debian 11>) :
+apt install wireguard wireguard-tools resolvconf
 
-[Peer]
-PublicKey = qLpTabk+liUFUPoDklUwr5LKAQSOLdjsUrvCnWeEG1E=
-PresharedKey = iLMJy9h5eg8xE5Ou1+BS6hZ716cifCyWD20Dj0MZoRs=
-Endpoint = 51.210.39.37:59622
-AllowedIPs = 0.0.0.0/0,::/0
+# Installer le profil Wireguard :
+nano /etc/wireguard/wg0.conf
+(puis coller le profil wireguard modifié à l'intérieur)
+
+# Activer et lancer notre profil wireguard au démarrage :
+systemctl enable wg-quick@wg0 --now
+
+# Et voici ! Votre IP est maintenant montée sur cet appareil !
+# Vous pouvez vérifier en faisant un
+ip a 
+# ou un
+curl ifconfig.me
 ```
 
-L'adresse ip Endpoint (51.210.39.37 dans l'exemple ci-dessus), doit être remplacée par l'ip Failover de notre profil. Cela va nous permettre d'éviter de se prendre des attaques ddos de manière généraliste. Seulement 1 service tombera au lieu de tous.
+C'est vraiment **très rapide et simple** ! Et ça marche 🤩
 
-Une fois ceci fait, on peut maintenant sauvegarder notre fichier et c'est bon on a notre profil qui est tout beaucoup tout propre.
+## (6) - Conclusion & Remerciements
 
-Vous pouvez copier coller le contenu du fichier dans un éditeur de texte comme visual studio code et l'enregistrer sous .conf
+**Et voici**, vous avez maintenant **(16) IP Failovers disponibles chez vous**, **protégées par OVH** sur **n'importe quel appareil** !
 
-### Installer Wireguard sur notre VM Client
+Cette astuce m'a permise de **franchir** un **grand pas dans l'auto-hébergement** que ce soit dans des **services** pour moi ou pour les autres car elle m'offre **la puissance d'avoir des VPS** (grâce à un hyperviseur comme [Proxmox](https://www.proxmox.com/en/) ou ESXi) avec des **IP dédiées** à **prix réduit** et avec un **service de qualité** similaire.
 
-Wireguard a la particularité d'être multi-os, multi-plateformes, partout. Android, Windows, Linux, Router, Télé, Par-tout.
+**Ce tutoriel existe initialement depuis Juillet 2020, mais a été remasterisé récemment en Janvier 2022 avec beaucoup d'améliorations et de mises à jour.**
+**WireGuard à enfin été merge dans le kernel linux stable et est encore plus simple à installer qu'avant.** **Et ce tutoriel à également été amélioré par la communauté et les personnes qui utilisent actuellement cette solution chez-eux ou autre part.**
 
-Vous pouvez [regarder leur documentation](https://www.wireguard.com/install/) qui vous expliquera très simplement comment installer wireguard.
-Mais grosso-modo, si vous avez un os très compatible (Debian 10, Ubuntu 18.04/20.04) il vous suffit de faire la commande
+#### Je tiens à remercier :
 
-`apt install wireguard wireguard-tools wireguard-dkms resolvconf `
+* [@Aven678](https://github.com/Aven678/) : *Pour avoir simplifié énormément la gestion des IP's et la création de profils*
 
-Une fois celle-ci faite on a besoin d'installer notre profil. Je vous conseille de vous connecter en ssh et ducoup de ne plus utiliser noVNC (Proxmox) car on ne peut pas copier coller ce qui va nous être très utile. (Pour obtenir l'ip locale : `ip a` )
+* [@DrKnaw](https://github.com/DrKnaw) : *Pour avoir patché des bugs liés à mon système qui n'était pas tout à fait fini à l'époque*
 
-En ssh, faisons la commande `nano /etc/wireguard/wg0.conf` puis collons notre profil que nous avions pimpé juste avant dans le terminal. Sauvegardons le fichier et voila !
+* [Mael](https://github.com/maelmagnien) : *Qui a entièrement est testé le tutoriel pour voir que tout fonctionne*
 
-Puis effectuez la commande :
+* @Twitsky : *Qui m'as également fais débugger plusieurs fois ma doc.*
 
-```bash
-systemctl start wg-quick@wg0
-systemctl enable wg-quick@wg0
-```
+Et plein d'autres personnes qui m'ont envoyé un message sur Discord pour m'aider à améliorer cette documentation ou me remercier.
+De plus, il existe sur GitHub des scripts et interfaces Web qui simplifient ma documentation réalisés également par la communauté.
 
-Normalement si vous faites un `curl ifconfig.me` vous devriez voir l'ip failover OVH. Et voilà 😆 on a une première ip OVH sur une VM dans sa maison.
-
-Par défaut avec la commande enable, le service wireguard montera et démarrera au démarrage afin d'avoir aucune commande supplémentaire pour monter notre interface.
-
-### Ajouter d'autres IP supplémentaires
-
-C'est bon ! Vous avez tout en main pour déployer des ips OVH. Néanmoins je vais quand même vous rappeler les commandes nécessaires pour déployer d'autres profils.
-
-Déjà n'oubliez pas d'être root, car tout se passe en root pour la commande `bash wireguard-install.sh`
-
-```bash
-It looks like WireGuard is already installed.
-
-What do you want to do?
-   1) Add a new user
-   2) Revoke existing user
-   3) Uninstall WireGuard
-   4) Exit
-Select an option [1-4]:
-```
-
-Sélectionnez 1 afin de déployer un nouveau profil.
-
-Dans le setup il vous demandera a un moment l'ip locale du client, il faut mettre une ip qui n'est Ducoup pas utilisée. Tout à l'heure j'ai pris 10.66.66.2, il faudra donc mettre 10.66.66.3 etc ...
-
-Une fois le setup terminé, le profil sera disponible dans le dossier /root
-
-Ensuite il faut setup les règles iptables donc `nano /etc/rc.local`, rajouter une ligne ifconfig avec cette fois-ci la bonne ip.
-Puis copier les règles iptables et remplacer l'ip failover et locale par la nouvelle. Une fois ceci fait n'oubliez pas de mettre les permissions en écriture (`chmod +x /etc/rc.local`) et vous n'avez pas besoin de redémarrer : un simple `bash /etc/rc.local` devrais suffit !
-
-### Infos Pratique
-
-Si vous avez besoin de déployer WireGuard sur des containers LXC suivez [ce tutoriel](http://web.archive.org/web/20210826175543/https://nixvsevil.com/posts/wireguard-in-proxmox-lxc/)
-
-Je rajouterais d'autres infos ici au fur et à mesure des remarques qu'on me fera sur ce tutoriel.
-
-
-
-### Merci
-
-Merci d'avoir suivi ce tutoriel, espère que celui vous aura été utile (pour ma part sa m'a changé ma vie, j'ai déjà 16 ip ovh chez moi 😆, la limite :().
-Le but de mon site c'est tout ce tutoriel : des trucs utiles qui peuvent servir a tout le monde.
-
-Merci à [Mael](https://github.com/maelmagnien) d'avoir Patch certains bugs dans le tuto.
-
+Merci d'avoir suivi ce tutoriel.

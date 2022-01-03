@@ -1,5 +1,14 @@
 # Installer Pterodactyl (avec les IP Failover OVH)
 
+
+
+```
+Ce tutoriel n'est plus à jour (en ce qui en est des ip Failover).
+Certaines informations peuvent donc être erronnées.
+```
+
+
+
 C'est génial !
 Cela fait bientôt plus d'1 an que j'essaie de faire marcher [Pterodactyl](https://pterodactyl.io) avec mes IP failover chez moi, et je restais bloqué à une bête erreur de Traffic.
 Grâce à [@Aven](https://github.com/Aven678) et [@DrKnaw](https://github.com/DrKnaw) et leurs investigations, on a réussi à contourner ce blocage bête et à réussir à avoir une solution stable.
