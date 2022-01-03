@@ -1,12 +1,12 @@
 # Avoir des IP FO chez soi (grâce à OVH et quelques tunnels)
 
-Pour mettre un peu de contexte, j'ai récupéré chez moi un serveur qui fait tourner pas mal de machines virtuelles. Bénéficiant de la fibre, je souhaite héberger des services pour la famille, des amis, et des personnes à qui je parle. 
-Seulement, avec une seule IP (résidentielle), je suis très vite limité par mon nombre de ports mis à ma disposition, et je suis vite obligé de faire un choix sur quels services héberger, ou éteindre...
-Mais heureusement qu'avec un peu de temps et d'argent, je peux désormais bénéficier d'IP dédiées à mes machines virtuelles. Ce sont des IP OVH (qui bénéficient de protection Anti-DDOS), qui sont localisées dans plusieurs pays du monde, et qui ne coûtent seulement 2€50 !
-Ça a changé ma manière d'héberger chez moi, et je tenais à vous partager ma solution.
+J'ai récupéré chez moi un **serveur** sur lequel j'ai installé **ESXi**, un **hyperviseur** qui me permet de **créer plein de machines virtuelles**. Dans ces machines virtuelles **j'héberge divers services** pour moi et pour d'autres.
 
-Je précise que je ne suis pas un expert réseau, pour certaines personnes cette technique peut sembler sale ou incomplète, mais pour mon utilité elle est parfaite.
-De plus, ce tuto est une seconde version grâce à la contribution de beaucoup de personnes qui m'ont aidé à avoir un résultat très qualitatif et stable, ils sont mentionnés à la fin de cet article.
+Seulement, avec **une seule IP** (résidentielle), je suis **vite limité** par le **nombre de ports** à ma disposition et le **nombre de services** que je souhaite faire tourner dans les **meilleures conditions**.
+
+J'ai donc ducoup cherché **un moyen d'avoir des IP chez moi**, **dédiées**, **protégées** par un **Anti-DDOS** et **peu cher**. Je n'avais jusqu'ici pas trouvé de résultat convenable, qui fonctionne bien, qui est modulaire, j'ai donc décidé d'en **fabriquer un**. 
+
+*Je précise que je ne suis pas un expert réseau, pour certaines personnes cette technique peut sembler sale ou incomplète, mais pour mon utilité elle est parfaite.* *De plus, ce tuto est une seconde version grâce à la contribution de beaucoup de personnes qui m'ont aidé à avoir un résultat très qualitatif et stable, ils sont mentionnés à la fin de cet article.*
 
 ## 1 - Les pré-requis
 
