@@ -6,8 +6,6 @@ summary: Des licenses offices nous ont été attribuées, mais le pack n'est pas
 tags: [office]
 ---
 
-# Comment utiliser son compte Office 365 offert par la région île de France ?
-
 Les deux précédentes rentrées, les élèves de seconde ont reçu un prêt d'un ordinateur portable par la région Île de France.
 L'intérêt de ceux-ci est d'avoir accès aux livres numériques (qui remplacent désormais ceux papiers), mais également de pouvoir ouvrir des pdf (avec SumatraPDF)  et faire du traitement de texte (avec LibreOffice)
 
