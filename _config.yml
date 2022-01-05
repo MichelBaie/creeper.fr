@@ -1,1 +1,62 @@
-theme: jekyll-theme-cayman 
+site: CreeperCreep.fr
+url: https://creepercreep.fr
+title: CreeperCorp
+description: Mes recherches et partages utiles.
+twitter:
+  username: CreeperBaie
+  card: summary
+  creator: CreeperBaie
+author:
+  twitter: CreeperBaie
+  name: Tristan
+  avatar: https://avatars.githubusercontent.com/u/39345534?v=4
+  email: #youremail
+  url: https://creepercreep.fr
+permalink: pretty
+
+baseurl: ""
+
+highlighter: none
+
+exclude:
+  - .jekyll-cache
+  
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+
+sass:
+  sass_dir:          _sass
+  style:            :compressed
+
+plugins:
+  - jekyll-paginate
+  - jekyll-seo-tag
+  - jekyll-sitemap  
+
+collections:
+  pages:
+    output: true
+    permalink: /:name
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:slug
+  
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
