@@ -6,9 +6,6 @@ summary: Nous allons voir ici comment le déployer de manière rapide et efficie
 tags: [games]
 ---
 
-# Installer Pterodactyl (avec les IP Failover OVH)
-
-
 
 ```
 Ce tutoriel n'est plus à jour (en ce qui en est des ip Failover).
