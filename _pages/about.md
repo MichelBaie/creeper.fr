@@ -29,4 +29,10 @@ Je parle de l'hébergement que je réalise chez moi, de projets sympas et de com
 * [VaultWarden](https://passpartout.creepercreep.fr)
 * [Gitea](https://git.creepercreep.fr)
 
+
+**Contact :**
+* Mail : admin@creepercreep.fr
+* Telegram : t.me/MichelBaie
+* Discord : Creeper#4228
+
 <img src="https://user-images.githubusercontent.com/39345534/122968671-1409c980-d38c-11eb-81a7-b4f11248e5c6.png" alt="DSC03449-min" style="zoom:50%;" />
