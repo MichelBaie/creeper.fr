@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Wireguard : Un protocole vraiment illimité ?
+title: Wireguard, un protocole vraiment illimité ?
 description: J'ai "enquêté" sur pourquoi je n'arrive pas à tirer plus de 3Gbps sur plusieurs serveurs Wireguard, et j'ai peut-être trouvé la réponse !
 summary: Le protocole Wireguard, possède-t-il vraiment une limite ?
 tags: [tunnel]
