@@ -20,3 +20,4 @@ Cela peut devenir compliqué quand on ne possède pas d'IP fixe ou que l'on ne s
 
 Et c'est là que Cloudflare Tunnels entre en jeu !
 
+![BDES-1971_Argo-Tunnel-Diagrams_fr-FR](https://user-images.githubusercontent.com/39345534/169573785-c43d8412-3d0e-460b-a438-5a8f5aa78fd3.png)
