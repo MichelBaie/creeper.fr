@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Installer Office sur les ordis RIDF
+title: (broken) Installer Office sur les ordis RIDF
 description: Comment installer le pack Office sur nos ordinateurs Région Île de France ?
 summary: Des licenses offices nous ont été attribuées, mais le pack n'est pas installé par défaut ...
 tags: [office]

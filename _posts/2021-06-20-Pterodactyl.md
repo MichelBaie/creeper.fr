@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Installer Pterodactyl
+title: (non terminé) Installer Pterodactyl
 description: Pterodactyl est un panel de gestion de serveurs de jeux.
 summary: Nous allons voir ici comment le déployer de manière rapide et efficiente.
 tags: [games]
