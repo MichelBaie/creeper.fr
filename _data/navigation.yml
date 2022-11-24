@@ -1,11 +1,7 @@
 links:
-- title: Publications
+- title: Articles
   url: /
 - title: Services
-  url: /services
+  url: https://services.creepercreep.fr
 - title: À propos
   url: /about
-- title: Rechercher
-  url: /search
-- title: RSS
-  url: /atom.xml
