@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Cacher une machine virtuelle ESXI 7.0
+title: Spoof une machine virtuelle ESXI 8
 description: Certains logiciels ou jeux bloquent les machines virtuelles pour peur de cheat, voici comment contourner ce blocage.
 tags: [esxi]
 ---
@@ -27,3 +27,13 @@ et
 ```
 SMBIOS.reflectHost = TRUE
 ```
+
+Il faut rajouter ces arguments dans les paramètres de la Machine Virtuelle :
+
+![](https://cdn.discordapp.com/attachments/926788575293472798/1094919458906198036/firefox_SQmpH7euze.png)
+
+![](https://cdn.discordapp.com/attachments/926788575293472798/1094919376551034930/firefox_BKR927lYtN.png)
+
+![](https://cdn.discordapp.com/attachments/926788575293472798/1094919272762970174/firefox_nfWxg5PCEp.png)
+
+Normalement vous devriez pouvoir lancer n’importe quel jeu désormais !

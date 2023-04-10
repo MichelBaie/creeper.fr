@@ -1,30 +1,18 @@
 ---
 layout: post
-title: (non terminé) Installer Pterodactyl
+title: (vieux) Comment Installer Pterodactyl
 description: Pterodactyl est un panel de gestion de serveurs de jeux.
 summary: Nous allons voir ici comment le déployer de manière rapide et efficiente.
 tags: [games]
 ---
 
-
-```
-Ce tutoriel n'est plus à jour (en ce qui en est des ip Failover).
-Certaines informations peuvent donc être erronnées.
-```
-
-
-
-C'est génial !
-Cela fait bientôt plus d'1 an que j'essaie de faire marcher [Pterodactyl](https://pterodactyl.io) avec mes IP failover chez moi, et je restais bloqué à une bête erreur de Traffic.
-Grâce à [@Aven](https://github.com/Aven678) et [@DrKnaw](https://github.com/DrKnaw) et leurs investigations, on a réussi à contourner ce blocage bête et à réussir à avoir une solution stable.
-
-Ducoup aujourd'hui on se retrouve pour un petit tuto afin d'installer le panel Pterodactyl sur une VM (qui possède une IP failover si besoin) afin de pouvoir gérer facilement ses serveurs de jeu et héberger ses amis.
+Bienvenu dans ce petit tutoriel afin d'installer le panel Pterodactyl sur une VM pour pouvoir gérer facilement ses serveurs de jeu et héberger ses amis.
 
 ## 1 - Prérequis
 
-* Un nom de domaine (de préférence passé sur Cloudflare car c'est cool)
-* Ubuntu 20.04 (c'est mieux)
-* Un VPS LXC (Avec Docker Activé) ou un VPS KVM
+* Un nom de domaine
+* Ubuntu >20.04
+* Un VPS LXC (avec compatibilité docker) ou un VPS KVM
 
 Connectez-vous à votre VPS en SSH, et on va le mettre à jour pour bien commencer :
 
@@ -32,32 +20,9 @@ Connectez-vous à votre VPS en SSH, et on va le mettre à jour pour bien commenc
 apt update && apt full-upgrade -y
 ```
 
-Ensuite on va appliquer notre petit "patch" réseau en modifiant notre fichier /etc/hosts
 
-```
-nano /etc/hosts
-```
+Je précise que ce tutoriel est **basé sur [la documentation officielle de Pterodactyl](https://pterodactyl.io/panel/1.0/getting_started.html)** qui est susceptible **d'être modifiée dans le futur**. A l'heure où j'écris cette documentation, tout fonctionne, cependant, si dans le futur des dysfonctionnements apparaissent, j'essaierais de les corriger.
 
-![Fichier Host Classique](./img/pterodactyl1.png)
-
-Et vous pouvez ensuite rajouter la ligne suivante :
-
-```
-127.0.0.1       panel.monpanel.fr
-```
-
-En n'oubliant pas de remplacer panel.monpanel.fr par le nom de domaine de notre panel.
-Il sera également de créer une règle de en prenant pour exemple celle ci-dessous :
-
-![N'oubliez pas de remplacer les valeurs par les vôtres !!](./img/pterodactyl2.png)
-
-
-
-Une fois tout ceci effectué, on devrais avoir une base solide.
-
-Je précise que ce tutoriel est **basé sur [la documentation officielle de Pterodactyl](https://pterodactyl.io/panel/1.0/getting_started.html)** qui est susceptible **d'être modifiée dans le futu**r. A l'heure où j'écris cette documentation, tout fonctionne, cependant, si dans le futur des dysfonctionnements apparaissent, j'essaierais de les corriger.
-
-De plus, il est préférable que l'**IP failover soit déjà montée** pour que tout fonctionne dans le futur (voir l'ancienne doc : [ici](https://michelbaie.github.io/Tutos/OVH))
 
 ## 2 - Téléchargeons la base de notre Pterodactyl
 
@@ -73,7 +38,7 @@ A l'heure actuelle, la nouvelle version de PHP 8.0, mais vous pouvez encore êtr
 apt list | grep php
 ```
 
-![Les paquets disponibles à l'heure actuelle](./img/pterodactyl3.png)
+![Les paquets disponibles à l'heure actuelle](https://cdn.discordapp.com/attachments/926788575293472798/1094921945973280768/pterodactyl3.png)
 
 Si on remonte un peu, on peut voir que sur l'exemple ci-dessus, la version encore disponible est **PHP 7.4** on va devoir la **garder pour plus tard**
 
@@ -152,7 +117,7 @@ cp .env.example .env
 composer install --no-dev --optimize-autoloader
 ```
 
-![On autorise le root](./img/pterodactyl4.png)
+![On autorise le root](https://cdn.discordapp.com/attachments/926788575293472798/1094922026289987584/pterodactyl4.png)
 
 N'oubliez pas de dire **yes** pour faire tourner en tant que root, c'est déconseillé mais bon on va faire avec.
 
@@ -174,35 +139,35 @@ Lançons le premier setup :
 php artisan p:environment:setup
 ```
 
-![](./img/pterodactyl5.png)
+![](https://cdn.discordapp.com/attachments/926788575293472798/1094922068535017512/pterodactyl5.png)
 
 Ici, il nous demande un email qui sera affiché comme le créateur des eggs exporté depuis cette installation pterodactyl. Un egg est un petit script d'installation de serveur de jeu, si jamais vous en développez depuis votre instance, il est préférable de donner un email sympa. Sinon ce n'est pas important, vous ne recevrez jamais d'email avec cette option.
 
-![Il nous demande l'URL de notre Pterodactyl](./img/pterodactyl6.png)
+![Il nous demande l'URL de notre Pterodactyl](https://cdn.discordapp.com/attachments/926788575293472798/1094922100189433866/pterodactyl6.png)
 
 Ici, on lui donne notre URL que l'on utilisera dans notre navigateur web. Il est nécessaire de préciser le https:// comme indiqué dans l'image au dessus, car nous allons ensuite générer les certificats SSL. Il n'est pas non plus nécessaire de rajouter un / à la fin.
 
-![On choisit le fuseau horaire de notre installation](./img/pterodactyl7.png)
+![On choisit le fuseau horaire de notre installation](https://cdn.discordapp.com/attachments/926788575293472798/1094922120997384212/pterodactyl7.png)
 
 Ici, il nous demande le fuseau horaire PHP de notre installation. Si vous êtes en France, il faudra alors écrire `Europe/Paris`. Si vous êtes dans d'autres pays, vous pouvez consulter [la liste de PHP](https://www.php.net/manual/en/timezones.php).
 
-![On choisit Redis comme serveur de cache](./img/pterodactyl8.png)
+![On choisit Redis comme serveur de cache](https://cdn.discordapp.com/attachments/926788575293472798/1094922146985291786/pterodactyl8.png)
 
 Ici, il nous demande quel type de serveur de cache on va utiliser pour notre Pterodactyl. Redis est parfait pour ce genre de situations, on va donc l'utiliser.
 
-![Nous allons utiliser redis pour se souvenir de nos sessions utilisateurs](./img/pterodactyl9.png)
+![Nous allons utiliser redis pour se souvenir de nos sessions utilisateurs](https://cdn.discordapp.com/attachments/926788575293472798/1094922175636586596/pterodactyl9.png)
 
 Ici, il nous demande quel type de manière nous allons utiliser pour se souvenir de nos sessions utilisateurs. Redis est également très bon pour faire ce genre d'actions, nous allons donc l'utiliser.
 
-![Ici il nous demande le serveur qui va mémoriser l'ordre des actions](./img/pterodactyl10.png)
+![Ici il nous demande le serveur qui va mémoriser l'ordre des actions](https://cdn.discordapp.com/attachments/926788575293472798/1094922203574845510/pterodactyl10.png)
 
 Ici, il nous demande le type de serveur qui va se souvenir des actions utilisateurs, nous allons également nous servir de redis.
 
-![On veut modifier en ligne](./img/pterodactyl11.png)
+![On veut modifier en ligne](https://cdn.discordapp.com/attachments/926788575293472798/1094922225813037066/pterodactyl11.png)
 
 Ici, il nous demande si on souhaite modifier certaines options via l'interface web. On choisit la simplicité et disons yes.
 
-![on touche a rien](./img/pterodactyl12.png)
+![on touche a rien](https://cdn.discordapp.com/attachments/926788575293472798/1094922257496821820/pterodactyl12.png)
 
 En ce qui en est des options pour redis, on laisse par défaut. Il n'y a pas de mot de passe, ce n'est qu'un serveur de cache local.
 
@@ -213,11 +178,11 @@ Il est maintenant temps de configurer la base de données que nous avons créé 
 php artisan p:environment:database
 ```
 
-![La configuration de la base de données](./img/pterodactyl13.png)
+![La configuration de la base de données](https://cdn.discordapp.com/attachments/926788575293472798/1094922281714712709/pterodactyl13.png)
 
 Si vous avez créé votre base de données avec les commandes que nous avions fait au dessus, vous pouvez laisser les valeurs pré-remplies en appuyant sur entrée et entrer le mot de passe lors du Database Password.
 
-![Si il n'y aucune erreur c'est parfait](./img/pterodactyl14.png)
+![Si il n'y aucune erreur c'est parfait](https://cdn.discordapp.com/attachments/926788575293472798/1094922308579246110/pterodactyl14.png)
 
 Vous n'êtes pas censé avoir obtenu d'erreurs. Si c'est le cas, vous pouvez retry en disant yes. Normalement vous vous êtes trompé de mot de passe, sinon votre installation d'ubuntu peut ne pas être propre et il peut rester des traces d'autres bases de données. Il serait donc préférable que vous recommenciez avec une installation propre ce tutoriel.
 
@@ -227,7 +192,7 @@ Nous n'allons pas configurer grand chose dans les mails :
 php artisan p:environment:mail
 ```
 
-![On touche pas grand chose](./img/pterodactyl15.png)
+![On touche pas grand chose](https://cdn.discordapp.com/attachments/926788575293472798/1094922339109568542/pterodactyl15.png)
 
 Ici, je n'ai pas de serveur SMTP et je ne me servirais jamais des mails, je sélectionne donc la fonction mail de PHP. Je ne suis pas sûr qu'elle fonctionne mais dans tous les cas je n'ai aucune utilité des mails donc ce n'est pas important. Cependant, si vous avez besoin des mails pour vos clients, il serait préférable que vous configuriez un serveur SMTP.
 
@@ -237,7 +202,7 @@ On peut maintenant initialiser notre base de données avec cette commande :
 php artisan migrate --seed --force
 ```
 
-![Il a finit de migrer ...](./img/pterodactyl16.png)
+![Il a finit de migrer ...](https://cdn.discordapp.com/attachments/926788575293472798/1094922366053781535/pterodactyl16.png)
 
 On va voir toutes les entrées se migrer dans la base de données et vous devriez avoir le message ci-dessus. Si ce n'est pas le cas, vous pouvez avoir mal configuré votre base données MySQL avec les commandes qu'on a fait au dessus. Je vous conseil de remonter et de les refaire.
 Une fois que cette commande s'est bien passée, on va pouvoir continuer.
@@ -248,7 +213,7 @@ Créons notre premier utilisateur (Administrateur de préférence) :
 php artisan p:user:make
 ```
 
-![On crée un utilisateur](./img/pterodactyl17.png)
+![On crée un utilisateur](https://cdn.discordapp.com/attachments/926788575293472798/1094922391697772604/pterodactyl17.png)
 
 N'oubliez pas de préciser yes au tout début.
 
@@ -264,7 +229,7 @@ Pour terminer notre installation de l'interface web, il va falloir rajouter des 
 crontab -e
 ```
 
-![Nano c'est un bon éditeur](./img/pterodactyl18.png)
+![Nano c'est un bon éditeur](https://cdn.discordapp.com/attachments/926788575293472798/1094922417434013736/pterodactyl18.png)
 
 Je vous conseille fortement de choisir 1 pour ouvrir nano.
 
@@ -276,11 +241,11 @@ Et vous pouvez ensuite tout en bas rajouter la ligne suivante au fichier :
 
 Comme ci-dessous :
 
-![Petite image d'illustration](./img/pterodactyl19.png)
+![Petite image d'illustration](https://cdn.discordapp.com/attachments/926788575293472798/1094922522153193542/pterodactyl19.png)
 
 On peut ensuite quitter le fichier avec Contrôle X Y puis Entrée, ou autre si vous avez votre linux en Français (suivez les indications en bas de la fenêtre nano).
 
-![Parfait](./img/pterodactyl20.png)
+![Parfait](https://cdn.discordapp.com/attachments/926788575293472798/1094922564595355658/pterodactyl20.png)
 
 Notre crontab est maintenant installée.
 
@@ -341,15 +306,15 @@ certbot certonly --nginx -d monpanel.monpanel.fr
 
 Remplacez le nom de domaine par le votre sans les https.
 
-![On rentre une email d'info](./img/pterodactyl21.png)
+![On rentre une email d'info](https://cdn.discordapp.com/attachments/926788575293472798/1094922617200312371/pterodactyl21.png)
 
 Ici, il nous demande notre adresse email sur laquelle on va recevoir les avertissements pour le renouvellement des certificats. C'est un peu important donc essayez de mettre un vrai email.
 
-![Il nous demande d'accepter des trucs](./img/pterodactyl22.png)
+![Il nous demande d'accepter des trucs](https://cdn.discordapp.com/attachments/926788575293472798/1094922640784883712/pterodactyl22.png)
 
 Ici, il nous demande si on accepte les TOS, on dit A pour accepter et ensuite il nous demande si on souhaite être abonné à une newsletter pour des projets libres en rapport avec internet, ce n'est pas obligatoire on refuse avec N.
 
-![Let's Encrypt finish](./img/pterodactyl23.png)
+![Let's Encrypt finish](https://cdn.discordapp.com/attachments/926788575293472798/1094922666512748544/pterodactyl23.png)
 
 Si vous avez un résultat similaire au mien, c'est parfait ! Notre certificat est bien installé sur notre machine on va pouvoir s'en servir.
 Si vous obtenez une erreur "Challenge Failed", vérifiez vos enregistrements DNS et recommencez la commande au dessus.
@@ -426,7 +391,7 @@ server {
 
     location ~ \.php$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass unix:/run/php/php8.0-fpm.sock;
+        fastcgi_pass unix:/run/php/php-fpm.sock;
         fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param PHP_VALUE "upload_max_filesize = 100M \n post_max_size=100M";
@@ -447,17 +412,17 @@ server {
 }
 ```
 
-![illustration pour les domaines](./img/pterodactyl24.png)
+![illustration pour les domaines](https://cdn.discordapp.com/attachments/926788575293472798/1094922708225118248/pterodactyl24.png)
 
-![ssl](./img/pterodactyl25.png)
+![ssl](https://cdn.discordapp.com/attachments/926788575293472798/1094922728752033882/pterodactyl25.png)
 
 Il faut remplacer "domain" par votre nom de domaine associé au panel.
 
 Ensuite, il va falloir remplacer la version de PHP inclue par défaut, par celle que nous avons installé au dessus. Pour ma part (voir l'exemple tout en haut), c'étais la version 7.4. Je remplace donc mon PHP 8.0 par 7.4 dans la conf comme ci-dessous :
 
-![Avant](./img/pterodactyl26.png)
+![Avant](https://cdn.discordapp.com/attachments/926788575293472798/1094922746040954940/pterodactyl26.png)
 
-![Après](./img/pterodactyl27.png)
+![Après](https://cdn.discordapp.com/attachments/926788575293472798/1094922763443126292/pterodactyl27.png)
 
 On peut ensuite sauvegarder le fichier, et activer ce fichier avec la commande suivante :
 
@@ -471,7 +436,7 @@ Une petite verification avec :
 nginx -t
 ```
 
-![tout est ok :)](./img/pterodactyl28.png)
+![tout est ok :)](https://cdn.discordapp.com/attachments/926788575293472798/1094922782183272529/pterodactyl28.png)
 
 Si tout est ok on peut redémarrer nginx et notre interface web devrait être accessible !
 
@@ -479,7 +444,7 @@ Si tout est ok on peut redémarrer nginx et notre interface web devrait être ac
 systemctl restart nginx
 ```
 
-![tadam](./img/pterodactyl29.png)
+![tadam](https://cdn.discordapp.com/attachments/926788575293472798/1094922807672057907/pterodactyl29.png)
 
 Cependant, **ce n'est pas finit** ! Il va maintenant falloir configurer wings ...
 
@@ -487,9 +452,9 @@ Cependant, **ce n'est pas finit** ! Il va maintenant falloir configurer wings ..
 
 Une fois que vous êtes connectés avec vos identifiants, on va pouvoir faire un petit tour du propriétaire.
 
-![Interface de Pterodactyl](./img/pterodactyl30.png)
+![Interface de Pterodactyl](https://cdn.discordapp.com/attachments/926788575293472798/1094922836465950881/pterodactyl30.png)
 
-![La partie administrateur](./img/pterodactyl31.png)
+![La partie administrateur](https://cdn.discordapp.com/attachments/926788575293472798/1094922856875433994/pterodactyl31.png)
 
 Bref c'étais une petite visite courte, on va maintenant pouvoir faire marcher cette interface avec wings.
 
@@ -505,7 +470,7 @@ curl -sSL https://get.docker.com/ | CHANNEL=stable bash
 
 Une fois cette commande fait, vous devez attendre un peu le temps qu'il installe tout et vous devriez finir par avoir un écran comme celui-ci qui vous donne toutes les spécifications techniques de votre serveur :
 
-![wow il est beau le serveur](./img/pterodactyl32.png)
+![wow il est beau le serveur](https://cdn.discordapp.com/attachments/926788575293472798/1094922886625628220/pterodactyl32.png)
 
 Cela signifie que Docker est bien installé et prêt à fonctionner. 
 
@@ -517,13 +482,13 @@ docker run hello-world
 
 Ici, mon VPS n'avais pas le LXC donc j'obtenais une erreur : 
 
-![Grave erreyr](./img/pterodactyl33.png)
+![Grave erreyr](https://cdn.discordapp.com/attachments/926788575293472798/1094922916572958810/pterodactyl33.png)
 
 Si vous avez une erreur similaire, docker n'est pas activé ou n'est pas compatible ! Contactez votre hébergeur pour qu'il vous l'active :(
 
 Si docker est activé vous devriez avoir ceci :
 
-![La sa fonctionne !!](./img/pterodactyl34.png)
+![La sa fonctionne !!](https://cdn.discordapp.com/attachments/926788575293472798/1094922937871650927/pterodactyl34.png)
 
 Si c'est le cas, parfait ! On va pouvoir continuer.
 
@@ -539,7 +504,7 @@ systemctl enable --now docker
 nano /etc/default/grub
 ```
 
-![grub](./img/pterodactyl35.png)
+![grub](https://cdn.discordapp.com/attachments/926788575293472798/1094922961129054228/pterodactyl35.png)
 
 Vous pouvez rajouter `swapaccount=1` à côté du quiet, puis sauvegarder. Et n'oubliez pas de sauvegarder avec `update-grub` et un petit redémarrage `reboot`.
 
@@ -583,19 +548,19 @@ Maintenant que notre wings est prêt à fonctionner, on va devoir l'ajouter dans
 
 Ajoutons d'abord un location en allant dans l'onglet "Locations" de notre panel administrateur :
 
-![Locations](./img/pterodactyl36.png)
+![Locations](https://cdn.discordapp.com/attachments/926788575293472798/1094923025658429460/pterodactyl36.png)
 
 Et ajoutons en cliquant sur 'Create New' une location, les valeurs entrées ne sont pas importantes.
 
-![Nos locations](./img/pterodactyl37.png)
+![Nos locations](https://cdn.discordapp.com/attachments/926788575293472798/1094923053663793152/pterodactyl37.png)
 
 Une fois ceci fait, on va pouvoir créer une nouvelle node, en nous rendant dans l'onget "Nodes", puis "Create New"
 
-![Les Nodes](./img/pterodactyl38.png)
+![Les Nodes](https://cdn.discordapp.com/attachments/926788575293472798/1094923073964216380/pterodactyl38.png)
 
 Vous pouvez ensuite remplir comme les champs comme ci-dessous :
 
-![Notre config de node](./img/pterodactyl39.png)
+![Notre config de node](https://cdn.discordapp.com/attachments/926788575293472798/1094923096017883157/pterodactyl39.png)
 
 Le FQDN doit être identique au nom de domaine du panel (sans https)
 Total Memory et Total Disk Space doit être exprimé en MB
@@ -605,7 +570,7 @@ Une fois tout rempli, vous pouvez cliquer sur "Create Node".
 
 On va maintenant pouvoir configurer nos allocations :
 
-![comment qu'ont fait l'ip ?](./img/pterodactyl40.png)
+![comment qu'ont fait l'ip ?](https://cdn.discordapp.com/attachments/926788575293472798/1094923114439245845/pterodactyl40.png)
 
 Si vous avez des IP Failover comme chez moi, IP Address doit être définit sur l'ip Lan WireGuard.
 Si vous avez un VPS normal, rentrez l'ip publique ou privée de votre VPS.
@@ -616,13 +581,13 @@ Les ports eux peuvent être définis sous forme de range de 100 comme moi ci-des
 
 On peut ensuite cliquer sur Submit.
 
-![Nos allocations toutes fraiches](./img/pterodactyl41.png)
+![Nos allocations toutes fraiches](https://cdn.discordapp.com/attachments/926788575293472798/1094923133640769586/pterodactyl41.png)
 
 On les vois ensuite apparaître.
 
 On peut maintenant charger notre configuration dans l'onglet configuration.
 
-![Notre conf](./img/pterodactyl42.png)
+![Notre conf](https://cdn.discordapp.com/attachments/926788575293472798/1094923152171216946/pterodactyl42.png)
 
 Vous pouvez copier tout le fichier de configuration en sélectionnant tout. Puis le coller dans fichier config.yml :
 
@@ -646,29 +611,16 @@ On peut voir l'état de notre service avec :
 systemctl status wings
 ```
 
-![L'état de notre service](./img/pterodactyl43.png)
+![L'état de notre service](https://cdn.discordapp.com/attachments/926788575293472798/1094923174753349692/pterodactyl43.png)
 
 Si tout est vert c'est parfait ! De plus il doit être noté tout en bas "sftp server listening for connections ..."
 
 On peut maintenant retourner sur notre interface web et on devrais avoir un peu plus d'info dans About :
 
-![Infos sur la node](./img/pterodactyl44.png)
+![Infos sur la node](https://cdn.discordapp.com/attachments/926788575293472798/1094923197473890404/pterodactyl44.png)
 
 Et si tout est ok vous devriez avoir un petit cœur vert dans l'onglet nodes :
 
-![Nodes](./img/pterodactyl45.png)
+![Nodes](https://cdn.discordapp.com/attachments/926788575293472798/1094923215303880805/pterodactyl45.png)
 
 Et voilà ! Notre pterodactyl est maintenant installé et prêt à fonctionner :)
-
-## 9 - Quelques exemples de comment l'utiliser
-
-Je publierais une vidéo ce sera beaucoup plus rapide et simple à expliquer qu'à écrire.
-
-## 10 - PHPMyAdmin
-
-On va voir plus tard comment installer PHPMyAdmin
-
-## 11 - Et voici
-
-Et voilà !
-On a fini de tuto pour installer pterodactyl. Amusez-vous bien :)

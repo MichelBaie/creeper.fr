@@ -1,6 +1,6 @@
 ---
 layout: post
-title: (broken) Installer Office sur les ordis RIDF
+title: Installer Office avec la license fournie par la Région Île-de-France
 description: Comment installer le pack Office sur nos ordinateurs Région Île de France ?
 summary: Des licenses offices nous ont été attribuées, mais le pack n'est pas installé par défaut ...
 tags: [office]
@@ -26,7 +26,7 @@ Et c'est avec ce compte que nous allons justement toucher le jackpot ...
 
 Pour se connecter à notre compte Microsoft, plein de méthodes. Mais vu que nous souhaitons bénificier d'Office, connectons-nous sur [office.com](https://office.com), puis identifions-nous avec notre identifiant monlycee.net :
 
-![loginoffice](../img/loginoffice.png)
+![loginoffice](https://cdn.discordapp.com/attachments/926788575293472798/1094918151449346058/loginoffice.png)
 
 Notre mot de passe est celui de notre ENT.
 
@@ -34,7 +34,7 @@ Notre mot de passe est celui de notre ENT.
 
 Et voici !
 
-![officehomepage](../img/officehomepage.png)
+![officehomepage](https://cdn.discordapp.com/attachments/926788575293472798/1094918182973747240/officehomepage.png)
 
 Nous voici sur notre Office365 :happy: 
 
