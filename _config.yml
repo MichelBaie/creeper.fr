@@ -1,13 +1,13 @@
 site: creepercreep.fr
 url: https://creepercreep.fr
-title: Posts de Creeper
-description: Bienvenue chez la CreeperCorp.
+title: Blog de Creeper
+description: Quelques articles utiles
 twitter:
   username: CreeperBaie
   card: summary
   creator: CreeperBaie
 author:
-  twitter: CreeperBaie
+  twitter: trbring
   name: Tristan
   avatar: https://avatars.githubusercontent.com/u/39345534?v=4
   email: admin@creepercreep.fr
