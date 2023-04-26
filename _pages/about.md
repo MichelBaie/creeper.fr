@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-# About me :thinking:
+# About me 🤔
 
 Bienvenue sur mon site !
 
@@ -11,8 +11,33 @@ Je parle d'hébergement que je réalise chez moi et de projets sympas !
 
 **Mes serveurs :**
 
-| Dell PowerEdge T620 :<br />- 2x Intel® Xeon® E5-2667v2<br />- 216GB DDR3L ECC<br />- 12x2TB HDD<br />- 8Gbit/s Free France<br />- ESXi | Dell PowerEdge R440 :<br />- 1x Intel® Xeon® Silver 4208<br />- 96GB DDR4 ECC<br />- 8x1.2TB HDD 10K<br />- 4x1TB NVME<br />- 8Gbit/s Free France<br />- UNRAID |
-| :----------------------------------------------------------- | :----------------------------------------------------------- |
+*Dell PowerEdge T620 :*
+
+* 2x Intel® Xeon® E5-2667v2
+
+* 216GB DDR3L ECC
+
+* 12x2TB HDD
+
+* NVIDIA GTX 1050 Ti
+
+* 8Gbit/s Free France
+
+* ESXi
+
+*Dell PowerEdge R440 :*
+
+* 1x Intel® Xeon® Silver 4208
+
+* 96GB DDR4 ECC
+
+* 8x1.2TB HDD 10K
+
+* 4x1TB NVME
+
+* 8Gbit/s Free France
+
+* UNRAID
 
 #### Quelques stats Github : 
 
