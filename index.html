@@ -8,5 +8,9 @@ layout: default
 <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%m-%d-%Y" }}</time></li>
 {% endfor %}
 </ul>
+<a class="weatherwidget-io" href="https://forecast7.com/fr/48d862d35/paris/" data-label_1="Paris" data-label_2="Météo" data-font="Roboto" data-icons="Climacons Animated" data-mode="Current" data-days="5" data-theme="weather_one" >Paris Météo</a>
+<script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+</script>
 </section>
 
