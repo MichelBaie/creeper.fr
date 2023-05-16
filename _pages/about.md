@@ -1,13 +1,12 @@
 ---
 layout: page
-title: About
+title: À Propos
 ---
-
-# About me 🤔
 
 Bienvenue sur mon site !
 
-Je parle d'hébergement que je réalise chez moi et de projets sympas !
+Ici, j’écris quelques articles de temps à autres dans lesquels j’évoque auto-hébergement et solutions que j’utilise et apprécie.
+Il y a également (très rarement) des grosses documentations 🙂
 
 **Mes serveurs :**
 
@@ -39,14 +38,14 @@ Je parle d'hébergement que je réalise chez moi et de projets sympas !
 
 * UNRAID
 
-#### Quelques stats Github : 
-
-[![ReadMe Card](https://github-readme-stats.vercel.app/api?username=Michelbaie&count_private=true&show_icons=true)]()
-
 **Contact :**
 
 * Mail : admin[at]creepercreep[dot]fr
 * Telegram : [t.me/MichelBaie](https://t.me/MichelBaie)
-* Discord : Creeper#4228
+* Discord :
+
+![](https://discord.c99.nl/widget/theme-1/402867240711618572.png)
+
+
 
 <img src="https://user-images.githubusercontent.com/39345534/122968671-1409c980-d38c-11eb-81a7-b4f11248e5c6.png" alt="DSC03449-min" style="zoom:50%;" />

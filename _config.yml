@@ -7,14 +7,14 @@ twitter:
   card: summary
   creator: CreeperBaie
 author:
-  twitter: trbring
+  twitter: creeperbaie
   name: Tristan
   avatar: https://avatars.githubusercontent.com/u/39345534?v=4
   email: admin@creepercreep.fr
   url: https://creepercreep.fr
 permalink: pretty
 
-baseurl: "https://creepercreep.fr/"
+baseurl: "https://creepercreep.fr"
 
 highlighter: none
 
