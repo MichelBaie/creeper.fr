@@ -1,5 +1,5 @@
-site: creepercreep.fr
-url: https://creepercreep.fr
+site: creeper.fr
+url: https://creeper.fr
 title: Blog de Creeper
 description: Quelques articles utiles
 twitter:
@@ -10,11 +10,11 @@ author:
   twitter: creeperbaie
   name: Tristan
   avatar: https://avatars.githubusercontent.com/u/39345534?v=4
-  email: admin@creepercreep.fr
-  url: https://creepercreep.fr
+  email: admin@creeper.fr
+  url: https://creeper.fr
 permalink: pretty
 
-baseurl: "https://creepercreep.fr"
+baseurl: "https://creeper.fr"
 
 highlighter: none
 
