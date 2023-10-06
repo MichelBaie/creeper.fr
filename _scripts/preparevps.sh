@@ -6,7 +6,7 @@ if systemctl is-enabled networking; then
   echo "Le réseau du VPS est prêt ! Vous pouvez continuer la documentation."
 else
   echo "Le réseau du VPS nécessite une modification. Veuillez patienter..."
-  apt install ifupdown net-tools resolvconf openresolv bash curl arping wget -y
+  apt install ifupdown net-tools resolvconf bash curl arping wget -y
   apt-get purge netplan.io --autoremove -y
   cloud-init clean
   cloud-init init
