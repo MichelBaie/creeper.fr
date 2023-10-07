@@ -12,8 +12,6 @@ Seulement, avec **une seule IP** (résidentielle), je suis **vite limité** par 
 
 J'ai donc donc cherché **un moyen d'avoir des IP chez moi**, **dédiées**, **protégées** par un **Anti-DDOS** et **peu cher**. Je n'avais jusqu'ici pas trouvé de résultat convenable, qui fonctionne bien, qui est modulaire, j'ai donc décidé d'en **créer un**. 
 
-*Je précise que je ne suis pas un expert réseau, pour certaines personnes cette technique peut sembler sale ou incomplète, mais pour mon utilité elle semble parfaite.* *De plus, ce tuto est une seconde version grâce à la contribution de beaucoup de personnes qui m'ont aidé à avoir un résultat très qualitatif et stable, ils sont mentionnés à la fin de cet article.*
-
 ## 1.1 - Les différentes approches
 
 Au cours de cette documentation, nous allons aborder différentes approches pour avoir des IP chez soi, ou comment publier son HomeLab.
@@ -85,28 +83,232 @@ Afin de suivre au mieux la documentation, il est requis d'avoir :
 
 Une fois que tous ces pré-requis sont remplis, vous pouvez suivre la suite de cette documentation. Allons-y !
 
-## 2.1 - Préparation réseau du VPS (HOSTMYSERVERS UNIQUEMENT)
+## 2.1 - Préparation du VPS
 
 **Connectez-vous en SSH** à votre VPS via les **identifiants** qui vous ont été **transmis par mail** ou que vous avez rentré lors de la **première installation**.
 
-**Récemment**, les images des VPS Debian **ont changé**, et utilisent désormais **netplan.io** comme **gestionnaire de réseau**.
+**Récemment**, les images des VPS Debian **de HMS** **ont changé**, et utilisent désormais **netplan.io** comme **gestionnaire de réseau**.
 Cela **compromettant la documentation**, il est **nécessaire** que nous **revenions à ifupdown**.
 
-**Vérifiez si vous êtes impacté avec la commande suivante :**
+Je vous ai préparé un script qui est censé tout faire tout seul, et vous préviens quand vous pouvez continuer la documentation :
 
 ```bash
-systemctl status networking
+curl -sSL https://raw.githubusercontent.com/MichelBaie/creeper.fr/main/_scripts/preparevps.sh | sudo bash
 ```
 
-**Si la commande ci-dessus vous retourne l’erreur suivante :**
+Ignorez les erreurs, quand le script vous dis que c'est prêt, continuez la documentation !
 
-![](https://cdn.discordapp.com/attachments/773225836887277599/1135506287052980294/image.png)
+## 2.2 - Installation du serveur Wireguard
 
-Alors vous pouvez exécuter le script suivant :
+Nous pouvons maintenant **installer notre serveur WireGuard**.
+Pour cela, j'ai choisi d'utiliser un [script maintenu par quelqu'un sur GitHub](https://github.com/angristan/wireguard-install) qui **crée un tunnel** et génère facilement des profils :
 
 ```bash
-curl -fsSL https://gist.github.com/MichelBaie/6abe40bbc72ad4ff9635ced63bc09d41/raw/659aa74d6ad988e2b18b0219f09f8be00cd4eaed/repair.sh -o repair.sh
-chmod +x 
-sudo sh repair.sh
+wget https://raw.githubusercontent.com/angristan/wireguard-install/master/wireguard-install.sh
+chmod +x wireguard-install.sh
+bash wireguard-install.sh
 ```
 
+Une fois ceci fait il va lancer un **petit setup interactif** :
+
+```bash
+Welcome to the WireGuard installer!
+The git repository is available at: https://github.com/angristan/wireguard-install
+
+I need to ask you a few questions before starting the setup.
+You can keep the default options and just press enter if you are ok with them.
+
+IPv4 or IPv6 public address: <ipvps>
+```
+
+```bash
+Public interface: eth0
+```
+
+```bash
+WireGuard interface name: wg0
+```
+
+```
+Server's WireGuard IPv4: 10.66.66.1
+```
+
+```
+Server's WireGuard IPv6: fd42:42:42::1
+```
+
+```
+Server's WireGuard port [1-65535]: XXXXXX
+```
+
+
+```
+First DNS resolver to use for the clients: 1.1.1.1
+```
+
+```
+Second DNS resolver to use for the clients (optional): 1.0.0.1
+```
+
+```
+WireGuard uses a parameter called AllowedIPs to determine what is routed over the VPN.
+Allowed IPs list for generated clients (leave default to route everything): 0.0.0.0/0,::/0
+```
+
+**Ne touchez pas aux options**, elles sont très bien auto-générées et on les modifiera par la suite.
+
+```
+Press any key to continue...
+```
+
+**Une fois** tout ce QCM rempli, **il va tout préparer** et nous **demandera** ensuite **le nom de notre tout premier client**.
+
+```bash
+Client name: MaVM
+```
+
+Ici, pour lui donner un nom facile à reconnaître je vais l'appeler **MaVM**, mais vous pouvez l'appeler comme vous le souhaitez.
+
+```bash
+Client's WireGuard IPv4: 10.66.66.2
+```
+
+```
+Client's WireGuard IPv6: fd42:42:42::2
+```
+
+**Il nous demande ici une ip**, **laissez là comme elle est**, nous la changerons plus tard.
+
+## 2.2.1 - Configuration du serveur Wireguard
+
+Toute la configuration s'effectue dans /etc/wireguard/wg0.conf :
+
+```
+nano /etc/wireguard/wg0.conf
+```
+
+**Retirez** les lignes commençant par PostUp et PostDown :
+
+```
+PostUp = ....................................................
+PostDown = ....................................................
+```
+
+**Rajoutez** les lignes suivantes au même endroit :
+
+```bash
+PostUp = iptables -I FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -I FORWARD -i wg0 -o eth0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -I FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -D FORWARD -i wg0 -o eth0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+```
+
+Vous pouvez **sauvegarder et quitter** le fichier avec CTRL + X Y Entrée
+
+**Ajustez** les réglages de gestion de paquets du linux avec la commande suivante :
+
+```bash
+echo 'net.ipv4.ip_forward=1
+net.ipv4.conf.all.proxy_arp=1
+net.ipv6.conf.all.forwarding=1' | tee -a /etc/sysctl.conf
+```
+
+Une fois ceci fait, vous pouvez redémarrer votre VPS avec la commande :
+
+```bash
+reboot
+```
+
+Le serveur Wireguard est maintenant prêt à accueillir différent type de profils.
+
+## 3.1 - Un simple serveur VPN
+
+Le premier cas d'usage est un simple serveur VPN. Vous pouvez créer autant de profils que vous le souhaitez, et une fois connecté, votre adresse sera masquée par celle de votre VPS.
+Cela peut-être utile si vous souhaitez télécharger du contenu en masquant votre adresse IP avec une connexion chiffrée, ou bien masquer votre adresses aux vilains internautes malveillants.
+
+**Il suffit d'utiliser les profils générés nativement par le script wireguard-install.sh**
+
+Pour générer un profil :
+
+1. **bash wireguard-install.sh**
+2. **Add a new user**
+3. Donnez un nom à votre profil, et laissez les adresses ip proposées par défaut.
+4. Votre profil est disponible dans le dossier /root/ ou bien scannez le QR-Code sur l'application mobile pour utiliser le profil.
+
+![](https://img.creeper.fr/Kiba9/BIliBAyO08.png/raw)
+
+Vous pouvez monter ce profil sur un Windows avec le client Wireguard téléchargeable depuis leur [site internet](https://www.wireguard.com/install/).
+Vous pouvez également le monter sur n'importe quel appareil mobile que ce soit [Apple](https://apps.apple.com/fr/app/wireguard/id1441195209) ou [Android](https://play.google.com/store/apps/details?id=com.wireguard.android&hl=fr&gl=US).
+Si vous souhaitez monter le profil sur une distribution Linux, référez-vous à cette partie de la documentation.
+
+## 3.2 - Un serveur VPN avec des IP dédiées
+
+Le premier cas d'usage est très pratique pour un usage de personnes Lambda qui ne souhaitent pas ouvrir leurs ports, simplement se protéger sur internet.
+Ce second cas est axé sur l'auto-hébergement, car il va vous permettre de monter sur n'importe quel machine une IP dédiée de HostMyServers.
+
+**Il est necéssaire que vous ayez une adresse IP additionnelle pour continuer ce cas d'usage.**
+
+1. Générez un profil Wireguard comme le cas précédent avec la commande **bash wireguard-install.sh**
+   Laissez l'ip par défaut, nous la modifierons juste après.
+
+2. Modifions la configuration côté serveur avec **nano /etc/wireguard/wg0.conf** :
+   ![](https://img.creeper.fr/Kiba9/pEFITIsu80.png/raw)
+   Vous devez rajouter à la fin du fichier l'adresse IP Additionnelle comme ceci :
+   ![](https://img.creeper.fr/Kiba9/nenUloxe42.png/raw)
+   Une fois la modification apportée, vous pouvez quitter le fichier en faisant CTRL+X Y Entrée
+
+3. Redémarrez le serveur Wireguard avec la commande suivante : **systemctl restart wg-quick@wg0**
+
+4. Modifiez également le fichier client présent dans le dossier /root : **nano /root/wg0-client-ipdedieee.conf**
+
+   ![](https://img.creeper.fr/Kiba9/DIRaxeTo15.png/raw)
+   Et interchangez l'addresse IP privée (10.66.66.X) par l'addresse publique que vous avez associé au profil côté serveur (l'ip dédiée qu'on a rajouté précédemment)
+
+   Rajoutez également juste en dessous de DNS la ligne suivante :
+
+   ```
+   PostUp = iptables -t mangle -A POSTROUTING -p tcp --tcp-flags SYN,RST SYN -o wg0 -j TCPMSS --clamp-mss-to-pmtu
+   ```
+
+   Le fichier doit ressembler à ceci :
+   ![](https://img.creeper.fr/Kiba9/cugUJaja11.png/raw)
+   Une fois la modification apportée, vous pouvez quitter le fichier en faisant CTRL+X Y Entrée
+
+Le profil est prêt ! Vous pouvez désormais le déployer sur une VM Linux ou Windows !
+Attention, il est important de savoir que une fois le profil monté, l'intégralité des ports de la machine seront joignables depuis l'extérieur.
+Faites donc attention à :
+
+* Utiliser des mot de passes robustes (ou des clés SSH)
+* Maintenir la machine à jour pour éviter des vulnérabilités flagrantes
+
+Vous pouvez suivre cette rubrique de la documentation pour monter l'IP sur une VM Linux.
+
+## 3.3 - Un serveur VPN ++ avec une gateway en bonus !
+
+Si vous avez une homelab chez vous, et que vous souhaitez router beaucoup d'adresses IP, sans avoir à installer Wireguard individuellement sur chacune de vos machines : cette rubrique est faite pour vous.
+
+Ce troisième cas d'approche consiste à router toutes les addresses sur un même client Wireguard, qui sera monté sur une machine dite "routeur" ou "gateway" qui distribuera les addresses aux autres.
+
+Si vous utilisez Proxmox, je vous recommande d'installer la machine routeur dans un KVM.
+
+1. Générez un profil Wireguard comme les deux cas précédents de la documentation.
+   Puis modifions le fichier côté serveur : **nano /etc/wireguard/wg0.conf**
+   ![](https://img.creeper.fr/Kiba9/RuPavEkO13.png/raw)
+   Rajoutez dans la rubrique [Interface] la ligne suivante :
+
+   ```bash
+   PostUp = ip route add <ipdédiée>/32 via <iplocaleduclient>/32
+   ```
+
+   Puis rajouter dans la rubrique [Peer] du client gateway, un AllowedIPs avec l'ipdédiée à router :
+
+   ```
+   AllowedIPs = 10.66.66.X/32, fdxx:xx:xx::xx/128, <ipdédiée>/32
+   ```
+
+   Je précise que l'ipdédiée est l'adresse à router, et iplocaleduclient est l'ip 10.66.66.X de notre client gateway
+   Et je précise aussi qu'il faut faire ça pour chaque adresse IP à router.
+   Une fois ceci fait, le fichier devrait ressembler à ceci :
+   ![](https://img.creeper.fr/Kiba9/PuguyIGU23.png/raw)
+
+2. Côté client, il va falloir le pimper !
+   Le fichier ressemble initialement à ceci :
+   ![](https://img.creeper.fr/Kiba9/NEdiTECE81.png/raw)
