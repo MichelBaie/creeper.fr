@@ -283,32 +283,7 @@ Vous pouvez suivre cette rubrique de la documentation pour monter l'IP sur une V
 
 ## 3.3 - Un serveur VPN ++ avec une gateway en bonus !
 
-Si vous avez une homelab chez vous, et que vous souhaitez router beaucoup d'adresses IP, sans avoir à installer Wireguard individuellement sur chacune de vos machines : cette rubrique est faite pour vous.
+coming soon
 
-Ce troisième cas d'approche consiste à router toutes les addresses sur un même client Wireguard, qui sera monté sur une machine dite "routeur" ou "gateway" qui distribuera les addresses aux autres.
+## 3.4 - VPN + Reverse proxying
 
-Si vous utilisez Proxmox, je vous recommande d'installer la machine routeur dans un KVM.
-
-1. Générez un profil Wireguard comme les deux cas précédents de la documentation.
-   Puis modifions le fichier côté serveur : **nano /etc/wireguard/wg0.conf**
-   ![](https://img.creeper.fr/Kiba9/RuPavEkO13.png/raw)
-   Rajoutez dans la rubrique [Interface] la ligne suivante :
-
-   ```bash
-   PostUp = ip route add <ipdédiée>/32 via <iplocaleduclient>/32
-   ```
-
-   Puis rajouter dans la rubrique [Peer] du client gateway, un AllowedIPs avec l'ipdédiée à router :
-
-   ```
-   AllowedIPs = 10.66.66.X/32, fdxx:xx:xx::xx/128, <ipdédiée>/32
-   ```
-
-   Je précise que l'ipdédiée est l'adresse à router, et iplocaleduclient est l'ip 10.66.66.X de notre client gateway
-   Et je précise aussi qu'il faut faire ça pour chaque adresse IP à router.
-   Une fois ceci fait, le fichier devrait ressembler à ceci :
-   ![](https://img.creeper.fr/Kiba9/PuguyIGU23.png/raw)
-
-2. Côté client, il va falloir le pimper !
-   Le fichier ressemble initialement à ceci :
-   ![](https://img.creeper.fr/Kiba9/NEdiTECE81.png/raw)
