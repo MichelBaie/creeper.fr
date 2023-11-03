@@ -29,35 +29,28 @@ Voici les différentes approches qui seront traitées dans cette documentation :
 
 L'avantage étant que que approches 3 et 4 ne nécessitent pas d'adresses IP additionnelles, c'est économe (car pas de frais supplémentaires) et compatible presque tous les hébergeurs.
 
-## 1.2 - Les différents providers VPS du Marché
+## 1.2 - Les choix de l'hébergeur
 
-Il existe énormément de fournisseurs de VPS sur le marché de l'hébergement. Certains peuvent proposer des offres alléchantes, voir parfois douteuses, mais ne sont pas spécialement de confiance.
+J'ai fait le choix de HostMyServers, un hébergeur français qui a quelques années d'expérience, car ils proposent des tarifs très intéressant au niveau du réseau et la qualité de service est correcte. Le premier VPS SSD suffit amplement pour avoir un traffic raisonnable (~300Mbps) dans le tunnel, et inclut une protection AntiDDOS basique qui protège des attaques simples. Leur support via le site est relativement réactif, mais je n'ai pas rencontré tant de problèmes que ça après plus d'une année chez eux.
 
-Au cours des différentes version de ma documentation, j'ai majoritairement recommandé OVH, hébergeur Français historique qui possède une grande renommée. Mais OVH ayant changé leur politique tarifaire des IP Failover, cette documentation pouvais devenir très chère et donc plus intéressante.
-
-C'est pour cela que je me suis tourné vers HostMyServers, un autre hébergeur Français beaucoup plus récent qui propose encore aujourd'hui des addresses IP additionnelles en facturation définitive. Cela fait depuis 1 an (Septembre 2022) que je suis chez eux, et globalement le service est quali.
-Dû à l'afflu d'utilisateurs leur réseau est beaucoup attaqué, ce qui peut poser de courtes interruptions de services (lors d'une grosse attaque), mais ils travaillent activement à améliorer leur Anti-DDOS afin de proposer le service le plus quali possible.
-
-#### **Voici la grille tarifaire d'HMS (Septembre 2023) :** (VPS SSD NVME)
+#### **Voici la grille tarifaire d'HMS (VPS SSD NVME) :** 
 
 | Modèle                               | SSD-1      | SSD-2      | SSD-4     | SSD-8    | SSD-12   | SSD-12'  |
 | ------------------------------------ | ---------- | ---------- | --------- | -------- | -------- | -------- |
 | *Prix mensuel sans engagement (TTC)* | 2,99€      | 5,99€      | 9,99€     | 19,99€   | 29,99€   | 39,99€   |
-| *Bande passante*                     | 250 Mbit/s | 500 Mbit/s | 800Mbit/s | 1 Gbit/s | 2 Gbit/s | 3 Gbit/s |
+| *Bande passante (garantie)*          | 250 Mbit/s | 500 Mbit/s | 800Mbit/s | 1 Gbit/s | 2 Gbit/s | 3 Gbit/s |
 | *vCore(s)*                           | 1          | 2          | 4         | 8        | 12       | 12       |
 | *Mémoire RAM*                        | 2 Go       | 4 Go       | 8 Go      | 16 Go    | 24 Go    | 32 Go    |
 | *Stockage SSD*                       | 20 Go      | 40 Go      | 60 Go     | 120 Go   | 160 Go   | 200 Go   |
 
-Personnellement j'ai pris le SSD-1, l'offre la moins chère toute basique mais qui fonctionne très bien pour mon usage.
-Les addresses IP aditionnelles chez HostMyServers coûtent 1,99€ à vie.
+Le gros plus avantage étant le tarif des adresses IP additionnelles ! Chez HMS, l'adresse IP additionnelle coûte 1,99€ TTC à Vie (tant que le VPS est renouvelé). Contrairement aux autres hébergeurs qui font payer mensuellement un supplément par IP.
 
 **Pour commander une IP Additionnelle**, il faut qu'**une fois le VPS Livré**, vous vous rendez dans l'**Espace Client** (**Votre VPS → Configuration → Commander une Nouvelle IP**), une fois la commande passée, un **mail de confirmation** vous **sera envoyé**.
 
-À l’heure où j’écris cette documentation **les débits ne semblent pas bridés côté VPS**. Le **débit indiqué** sur les offres commercialisées sont simplement **une garantie**.
+À l’heure où j’écris cette documentation **les débits ne semblent pas bridés côté VPS**. Le **débit indiqué** sur les offres commercialisées sont ceux **garantis**.
 
 ### 1.3 - Quelques justifications et informations variées
 
-* **Aujourd'hui**, j'utilise **[HostMyServers](https://www.hostmyservers.fr/)**, un hébergeur français 🇫🇷. C'est le seul autre host que je connaisse qui **propose des ipv4 à tarifs "à vie"**. Il propose lui aussi un **Anti-DDOS** correct, et existe depuis un [**certain temps**](https://www.societe.com/societe/hostmyservers-842789000.html).
 * **J'ai choisi [WireGuard](https://www.wireguard.com/)** pour notre **tunnel**, un **protocole VPN** qui utilise de **l'UDP**. Il est **compatible** avec **énormément de plateformes**, est **extrêmement léger**, très **facile à déployer** et beaucoup plus **performant** que ses concurrents, tout en restant **sécurisé**. C'est un petit **nouveau** qui viens d'arriver dans le domaine de l'**open-source** et qui as fait ses preuves chez moi ces deux dernières années.
 
 ![](https://img.creeper.fr/Kiba9/sinILeGU17.png/raw)
@@ -219,36 +212,16 @@ reboot
 
 Le serveur Wireguard est maintenant prêt à accueillir différent type de profils.
 
-## 3.1 - Un simple serveur VPN
+## 3.1 - Un serveur VPN avec des IP dédiées
 
-Le premier cas d'usage est un simple serveur VPN. Vous pouvez créer autant de profils que vous le souhaitez, et une fois connecté, votre adresse sera masquée par celle de votre VPS.
-Cela peut-être utile si vous souhaitez télécharger du contenu en masquant votre adresse IP avec une connexion chiffrée, ou bien masquer votre adresses aux vilains internautes malveillants.
-
-**Il suffit d'utiliser les profils générés nativement par le script wireguard-install.sh**
-
-Pour générer un profil :
-
-1. **bash wireguard-install.sh**
-2. **Add a new user**
-3. Donnez un nom à votre profil, et laissez les adresses ip proposées par défaut.
-4. Votre profil est disponible dans le dossier /root/ ou bien scannez le QR-Code sur l'application mobile pour utiliser le profil.
-
-![](https://img.creeper.fr/Kiba9/BIliBAyO08.png/raw)
-
-Vous pouvez monter ce profil sur un Windows avec le client Wireguard téléchargeable depuis leur [site internet](https://www.wireguard.com/install/).
-Vous pouvez également le monter sur n'importe quel appareil mobile que ce soit [Apple](https://apps.apple.com/fr/app/wireguard/id1441195209) ou [Android](https://play.google.com/store/apps/details?id=com.wireguard.android&hl=fr&gl=US).
-Si vous souhaitez monter le profil sur une distribution Linux, référez-vous à cette partie de la documentation.
-
-## 3.2 - Un serveur VPN avec des IP dédiées
-
-Le premier cas d'usage est très pratique pour un usage de personnes Lambda qui ne souhaitent pas ouvrir leurs ports, simplement se protéger sur internet.
-Ce second cas est axé sur l'auto-hébergement, car il va vous permettre de monter sur n'importe quel machine une IP dédiée de HostMyServers.
+Si vous êtes intéressés par l'auto-hébergement, cette solution (historique à la documentation) vous montre comment affecter des adresses IPs dédiées à nos clients.
 
 **Il est necéssaire que vous ayez une adresse IP additionnelle pour continuer ce cas d'usage.**
 
 1. Générez un profil Wireguard comme le cas précédent avec la commande **bash wireguard-install.sh**
    Laissez l'ip par défaut, nous la modifierons juste après.
-
+   *Vous pouvez également modifier le profil qui a été généré précédemment wg0-client-MaVM*
+   
 2. Modifions la configuration côté serveur avec **nano /etc/wireguard/wg0.conf** :
    ![](https://img.creeper.fr/Kiba9/pEFITIsu80.png/raw)
    Vous devez rajouter à la fin du fichier l'adresse IP Additionnelle comme ceci :
@@ -269,7 +242,7 @@ Ce second cas est axé sur l'auto-hébergement, car il va vous permettre de mont
    ```
 
    Le fichier doit ressembler à ceci :
-   ![](https://img.creeper.fr/Kiba9/cugUJaja11.png/raw)
+   ![](https://img.creeper.fr/Kiba9/LoCUSIfU59.png/raw)
    Une fois la modification apportée, vous pouvez quitter le fichier en faisant CTRL+X Y Entrée
 
 Le profil est prêt ! Vous pouvez désormais le déployer sur une VM Linux ou Windows !
@@ -279,7 +252,29 @@ Faites donc attention à :
 * Utiliser des mot de passes robustes (ou des clés SSH)
 * Maintenir la machine à jour pour éviter des vulnérabilités flagrantes
 
+Vous pouvez également connecter vos machines entre elles via le VPN en utilisant les adresses en 10.66.66.X !
+
 Vous pouvez suivre cette rubrique de la documentation pour monter l'IP sur une VM Linux.
+
+## 3.2 - Un simple serveur VPN
+
+Le premier cas d'usage est un simple serveur VPN. Vous pouvez créer autant de profils que vous le souhaitez, et une fois connecté, votre adresse sera masquée par celle de votre VPS.
+Cela peut-être utile si vous souhaitez télécharger du contenu en masquant votre adresse IP avec une connexion chiffrée, ou bien masquer votre adresses aux vilains internautes malveillants.
+
+**Il suffit d'utiliser les profils générés nativement par le script wireguard-install.sh**
+
+Pour générer un profil :
+
+1. **bash wireguard-install.sh**
+2. **Add a new user**
+3. Donnez un nom à votre profil, et laissez les adresses ip proposées par défaut.
+4. Votre profil est disponible dans le dossier /root/ ou bien scannez le QR-Code sur l'application mobile pour utiliser le profil.
+
+![](https://img.creeper.fr/Kiba9/BIliBAyO08.png/raw)
+
+Vous pouvez monter ce profil sur un Windows avec le client Wireguard téléchargeable depuis leur [site internet](https://www.wireguard.com/install/).
+Vous pouvez également le monter sur n'importe quel appareil mobile que ce soit [Apple](https://apps.apple.com/fr/app/wireguard/id1441195209) ou [Android](https://play.google.com/store/apps/details?id=com.wireguard.android&hl=fr&gl=US).
+Si vous souhaitez monter le profil sur une distribution Linux, référez-vous à cette partie de la documentation.
 
 ## 3.3 - Un serveur VPN ++ avec une gateway en bonus !
 
@@ -287,3 +282,112 @@ coming soon
 
 ## 3.4 - VPN + Reverse proxying
 
+Pour pouvoir gérer plus facilement nos flux web, nous pouvons également installer un Reverse Proxy sur le VPS HMS, et router à l'aide des profils wireguard les bons sites aux bons endroits.
+Cela fait économiser des ressources, en centralisant l'instance Nginx sur le VPS HMS qui sert de coeur de réseau, et en réduisant le nombre d'adresses IPV4 publiques utilisées.
+
+Commençons tout d'abord par installer Docker sur notre VPS :
+
+```bash
+curl -sSL https://get.docker.com | sudo bash
+```
+
+Créer un dossier où nous installerons notre nginxproxymanager :
+
+```bash
+mkdir nginxproxymanager
+cd nginxproxymanager
+```
+
+Installer le docker-compose.yml :
+
+```bash
+nano docker-compose.yml
+```
+
+```yaml
+version: '3.8'
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      DISABLE_IPV6: 'true'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+```
+
+Vous pouvez ensuite démarrer l'instance avec la commande suivante :
+
+```bash
+docker compose up -d
+```
+
+Vous pouvez vous rendre sur l'interface d'administration via http://ip-vps:81/
+
+![](https://img.creeper.fr/Kiba9/fUTePeMO18.png/raw)
+
+Vous pouvez vous connecter à l'interface web avec les identifiants par défaut :
+
+```
+username : admin@example.com
+password : changeme
+```
+
+Et changer le mot de passe par défaut.
+
+![](https://img.creeper.fr/Kiba9/tuQUwUmU80.png/raw)
+
+Commençons par générer des certificats SSL, ce sont des certificats gratuit qui vous permettront d'avoir l'HTTPS sur vos services !
+
+Il est nécessaire que vous ayez :
+
+* Un nom de domaine
+* Le contrôle de la Zone DNS (passez-le chez cloudflare l'ui est mieux)
+* Une règle DNS A qui pointe vers l'IP principale du VPS HMS
+
+![](https://img.creeper.fr/Kiba9/QicegAwo63.png/raw)
+
+Je vais générer un certificat pour doc.creeper.fr
+
+Rendez-vous via la barre de navigation dans la rubrique SSL Certificates 
+
+![](https://img.creeper.fr/Kiba9/bIKImOkU61.png/raw)
+
+Puis cliquez sur Add SSL Certificate
+
+![](https://img.creeper.fr/Kiba9/jOyikAPi20.png/raw)
+
+Renseignez tout en haut le nom de domaine du service que vous souhaitez générer. Il est également possible de spécifier *.votredomaine.fr mais il faudra utiliser un DNS Challenge pour valider le certificat. Le DNS Challenge peut varier en fonction de votre registrar DNS.
+
+![](https://img.creeper.fr/Kiba9/KiLOdELU62.png/raw)
+
+![](https://img.creeper.fr/Kiba9/RICOWutO99.png/raw)
+
+Une fois le certificat généré, nous pouvons créer le service associé dans la rubrique "Hosts"
+
+![](https://img.creeper.fr/Kiba9/YAFiSutI96.png/raw)
+
+Cliquer sur "Add Proxy Host"
+
+![](https://img.creeper.fr/Kiba9/vikEQuVe99.png/raw)
+
+![](https://img.creeper.fr/Kiba9/JEtUnERE97.png/raw)
+
+Dans Domain Names : sousdomaine.votresite.fr
+Scheme :
+C'est ce que vous voyez en service local. Par exemple http://ip:8123
+Il faudra mettre Scheme http, forwardip ip, forwardport : 8123
+
+Vous pouvez également cocher Block Common Exploits et Websockets Support
+
+![](https://img.creeper.fr/Kiba9/QewiwebO93.png/raw)
+
+Dans la rubrique SSL, séléctionnez le certificat SSL généré précédemment, et cochez Force SSL et HTTP/2 Support.
+
+![](https://img.creeper.fr/Kiba9/pEmICuKI58.png/raw)
+
+Vous pouvez ensuite sauvegarder en cliquant sur "Save"
+
+![](https://img.creeper.fr/Kiba9/lUTuVEzU83.png/raw)
