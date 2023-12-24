@@ -153,6 +153,10 @@ strong, b {
 	font-variant-numeric: tabular-nums;
 }
 
+.post ul, .project ul, .post ol  {
+	//list-style-position: inside;
+}
+
 main {
 	display:flex;
 	flex-wrap:wrap;
@@ -197,27 +201,10 @@ figcaption {
     font-size: smaller;
 }
 
-@media (prefers-color-scheme: dark) {
-	body {
-		background-color: #1c1c1e;
-		color: #fefefe;
-	}
-	a {
-		color: #5fa9ee;
-		color: #4e93ff;
-	}
-	img {
-		filter: grayscale(20%);
-	}
-	code {
-		background: #3f3f41;
-	}
-	pre {
-		background: #3f3f41;
-	}
-	nav {
-		ul {
-			border-right: 3px solid #edf2f7;
-		}
-	}
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
 }
