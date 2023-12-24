@@ -40,7 +40,7 @@ Il y a également (très rarement) des grosses documentations 🙂
 
 **Contact :**
 
-* Mail : admin[at]creepercreep[dot]fr
+* Mail : admin[at]creeper[dot]fr
 * Telegram : [t.me/MichelBaie](https://t.me/MichelBaie)
 * Discord :
 
