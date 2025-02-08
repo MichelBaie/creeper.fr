@@ -1,39 +1,23 @@
 site: creeper.fr
-url: https://creeper.fr
-title: Blog de Creeper
-description: Quelques articles utiles
-twitter:
-  username: CreeperBaie
-  card: summary
-  creator: CreeperBaie
-author:
-  twitter: creeperbaie
-  name: Tristan
-  avatar: https://avatars.githubusercontent.com/u/39345534?v=4
-  email: admin@creeper.fr
-  url: https://creeper.fr
+url: https://creeper.fr/
+title: creeper.fr
+description: Le site de Creeper
+locale: fr_FR
 permalink: pretty
-
-baseurl: "https://creeper.fr"
-
+baseurl: ""
 highlighter: none
-
 exclude:
   - .jekyll-cache
-  
 compress_html:
   clippings: all
   comments: ["<!-- ", " -->"]
-
 sass:
   sass_dir:          _sass
   style:            :compressed
-
 plugins:
   - jekyll-paginate
   - jekyll-seo-tag
   - jekyll-sitemap  
-
 collections:
   pages:
     output: true
@@ -41,7 +25,6 @@ collections:
   posts:
     output: true
     permalink: /:year/:month/:day/:slug
-  
 defaults:
   -
     scope:

@@ -1,7 +1,7 @@
 links:
-- title: Articles
+- title: Accueil
   url: /
-- title: Services
-  url: https://services.creeper.fr
+- title: Trucs
+  url: /trucs
 - title: À propos
-  url: /about
+  url: https://github.com/MichelBaie/MichelBaie/blob/master/README.md
