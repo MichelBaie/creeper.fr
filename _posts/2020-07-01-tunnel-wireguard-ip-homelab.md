@@ -8,11 +8,11 @@ tags: [tunnel,hostmyservers,hms,ipfailover,ipfo,wireguard]
 
 # Introduction
 
-J’ai chez moi un **serveur** sur lequel tourne [**Proxmox**](https://www.proxmox.com/), un **hyperviseur** qui me permet de créer des **machines virtuelles** et des [**conteneurs Linux**](https://linuxcontainers.org/) afin d’héberger **différents services** pour mes diverses activités d'**auto-hébergement**. 
+J’ai chez moi un **serveur** sur lequel tourne [**Proxmox**](https://www.proxmox.com/), un **hyperviseur** qui me permet de créer des **machines virtuelles** et des [**conteneurs Linux**](https://linuxcontainers.org/) afin d’héberger **différents services** pour mes diverses activités d'**auto-hébergement**.
 
-Seulement, ne possédant qu’un seul abonnement internet de particulier, et par conséquent **une seule IP résidentielle**, je suis vite limité par le **nombre de ports disponibles** et je ne peux pas faire tourner tous les services que je souhaite dans les meilleures conditions. 
+Seulement, ne possédant qu’un seul abonnement internet de particulier, et par conséquent **une seule IP résidentielle**, je suis vite limité par le **nombre de ports disponibles** et je ne peux pas faire tourner tous les services que je souhaite dans les meilleures conditions.
 
-Encore heureux, je peux **ouvrir mes ports**, mais certains opérateurs en France **retirent cette** option au fil du temps, ou bien les **box 4G/5G** ne proposent pas cette option à cause du **[CG-NAT](https://fr.wikipedia.org/wiki/Carrier-grade_NAT)**. 
+Encore heureux, je peux **ouvrir mes ports**, mais certains opérateurs en France **retirent cette** option au fil du temps, ou bien les **box 4G/5G** ne proposent pas cette option à cause du **[CG-NAT](https://fr.wikipedia.org/wiki/Carrier-grade_NAT)**.
 
 Ces **limitations** m’ont amené à **mettre en place une solution pour avoir plusieurs adresses IP** **chez soi**, **dédiées**, **protégées** par un **Anti-DDOS** et **peu chères**. N’ayant trouvé aucune solution existante, j’ai bidouillé et mis en place la mienne.
 
@@ -350,18 +350,18 @@ arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire>
 
 **L’IP devrait de nouveau fonctionner !**
 
-**Si jamais le problème persiste**, il faut **implémenter** une **crontab** qui **exécute un script** arping.sh **toutes les 5 minutes**. Voici une implémentation **générée avec le Chat** [🐈‍⬛](https://chat.mistral.ai/:
+**Si jamais le problème persiste**, il faut **implémenter** une **crontab** qui **exécute un script** arping.sh **toutes les 5 minutes**. Voici une implémentation **générée avec le Chat** [🐈‍⬛](https://chat.mistral.ai/):
 
 ### Étape 1 : Créer le script `arping.sh`
 
 1. **Ouvrir un terminal** sur votre VPS.
 
 2. **Créer le fichier `arping.sh`** dans le répertoire `/opt` :
-   
+
    ```bash
    sudo nano /opt/arping.sh
    ```
-   
+
 3. **Ajouter le contenu suivant** au fichier `arping.sh` :
    ```bash
    #!/bin/bash
@@ -402,12 +402,12 @@ arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire>
    ```
 
 2. **Ajouter les adresses IP** que vous utilisez avec Wireguard, une par ligne. Par exemple :
-   
+
    ```
    <ip-additionnelle1>
    <ip-additionnelle2>
    ```
-   
+
 3. **Enregistrer et quitter** l'éditeur (`CTRL + X`, puis `Y`, puis `Entrée`).
 
 ### Étape 3 : Configurer la crontab
@@ -419,7 +419,7 @@ arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire>
 
 2. **Ajouter une nouvelle tâche cron** pour exécuter le script `arping.sh` toutes les 5 minutes :
    ```bash
-   */5 * * * * /bin/bash /opt/arping.sh
+   */5 * * * * /opt/arping.sh
    ```
 
 3. **Enregistrer et quitter** l'éditeur (`CTRL + X`, puis `Y`, puis `Entrée`).
@@ -427,11 +427,11 @@ arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire>
 ### Étape 4 : Vérifier la configuration
 
 1. **Vérifier que la tâche cron a été ajoutée correctement** :
-   
+
    ```bash
    crontab -l
    ```
-   
+
 2. **Vérifier que le script fonctionne** en l'exécutant manuellement une première fois :
    ```bash
    sudo /opt/arping.sh
