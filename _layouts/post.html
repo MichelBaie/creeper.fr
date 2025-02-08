@@ -7,6 +7,21 @@ layout: default
   {{ content }}
   <span class="meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time> &middot; {% for tag in page.tags %}
     <a href="/tag/{{tag}}">{{tag}}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}</span>
+      <script src="https://giscus.app/client.js"
+      data-repo="MichelBaie/creeper.fr"
+      data-repo-id="R_kgDOMqgGPA"
+      data-category="General"
+      data-category-id="DIC_kwDOMqgGPM4CmxsT"
+      data-mapping="url"
+      data-strict="1"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="preferred_color_scheme"
+      data-lang="fr"
+      crossorigin="anonymous"
+      async>
+      </script>
 </section>
 
 
