@@ -54,13 +54,15 @@ defaults:
 og_image:
   output_dir: "assets/img"
   domain: "creeper.fr"
+  image: "assets/img/moi.png"
   force: true
   verbose: true
-  header:
-    font_family: "Roboto, Bold"
-    color: "#FFFFFF"
-  content:
-    font_family: "Roboto, Bold"
-    color: "#FFFFFF"
-  canvas:
-    background_image: "/assets/img/background_banner.png"
+  border_bottom:
+    width: 20
+    fill:
+      - "#4cff99"
+      - "#4dd8ff"
+      - "#1d5f99"
+      - "#091816"
+      - "#004840"
+      - "#035a00"
