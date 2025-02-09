@@ -33,13 +33,11 @@ Vous pouvez me joindre :
 Si l’un de mes articles vous a été utile ou si vous en retirez des bénéfices, je vous invite à me soutenir par une contribution, quel que soit le montant. Votre geste sera grandement apprécié !
 
 - **PayPal :** [paypal.me/tbringuier](https://paypal.me/tbringuier)
-- **Revolut !** [revolut.me/bringuiert](https://revolut.me/bringuiert)
+- **Revolut :** [revolut.me/bringuiert](https://revolut.me/bringuiert)
 
-## Mon chat, Groot 🐈‍⬛
+## Mon chat, Groot 🐈‍⬛ :
 
 ![Groot](assets/img/groot.png)
-
----
 
 Merci de votre visite !  
 N’hésitez pas à consulter mes projets et à me contacter pour échanger sur nos passions communes.
