@@ -23,7 +23,6 @@ jobs:
 
       - name: Installer les dépendances
         run: |
-          sudo apt-get update
           sudo apt-get install -y libvips
 
       - name: Configurer Ruby
