@@ -1,4 +1,8 @@
-## À propos de moi
+---
+layout: page
+title: À propos de moi
+description: Étudiant & sysadmin !
+---
 
 Actuellement étudiant en deuxième année de BUT Réseaux et Télécommunications au sein de l'[IUT de Villetaneuse](https://iutv.univ-paris13.fr/), je profite de mon temps libre pour transmettre mes connaissances à travers des articles sur ce blog. Je parle majoritairement d'auto-hébergement, sujet qui me passionne depuis tout petit.
 
