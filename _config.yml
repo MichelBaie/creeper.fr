@@ -54,9 +54,12 @@ defaults:
 og_image:
   output_dir: "assets/img"
   domain: "creeper.fr"
+  header:
+    font_family: "Roboto, Bold"
+  content:
+    font_family: "Roboto, Bold"
   image: "assets/img/moi.png"
   force: true
-  verbose: true
   border_bottom:
     width: 40
     fill:
