@@ -5,14 +5,13 @@ description: Le site de Creeper
 locale: fr_FR
 permalink: pretty
 baseurl: ""
+disable_disk_cache: true
 highlighter: none
 author:
   name: "Tristan BRINGUIER"
   url: "https://creeper.fr/"
 image: "/assets/img/groot.jpg"
 logo: "/assets/img/groot.jpg"
-keep_files:
-  - "assets"
 exclude:
   - .jekyll-cache
 compress_html:
