@@ -52,6 +52,7 @@ defaults:
       layout: "post"
   - scope:
       path: ""
+      type: "pages"
     values:
       image: /assets/img/banner.png
 og_image:
