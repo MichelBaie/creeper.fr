@@ -6,8 +6,6 @@ description: Étudiant & sysadmin !
 
 Actuellement étudiant en deuxième année de BUT Réseaux et Télécommunications au sein de l'[IUT de Villetaneuse](https://iutv.univ-paris13.fr/), je profite de mon temps libre pour transmettre mes connaissances à travers des articles sur ce blog. Je parle majoritairement d'auto-hébergement, sujet qui me passionne depuis tout petit.
 
----
-
 ## Mon infrastructure
 
 ### Protogen (fait maison) :
@@ -21,7 +19,6 @@ Actuellement étudiant en deuxième année de BUT Réseaux et Télécommunicatio
 
 **Et quelques VPS chez HostMyServers, PulseHeberg, OVH, Scaleway ...**
 
----
 ## Me contacter
 
 Vous pouvez me joindre : 
@@ -31,19 +28,16 @@ Vous pouvez me joindre :
 * Sur Linkedin : [**in/tbringuier**](https://www.linkedin.com/in/tbringuier)
 * Via Discord : @creeper.fr, vous pouvez également rejoindre [**mon discord**](https://discord.gg/34tTSGRRyb).
 
----
-
 ## Me faire un don
 
 Si l’un de mes articles vous a été utile ou si vous en retirez des bénéfices, je vous invite à me soutenir par une contribution, quel que soit le montant. Votre geste sera grandement apprécié !
 
 - **PayPal :** [paypal.me/tbringuier](https://paypal.me/tbringuier)
 - **Revolut !** [revolut.me/bringuiert](https://revolut.me/bringuiert)
----
 
 ## Mon chat, Groot 🐈‍⬛
 
-![Groot](https://forevercdn.creeper.fr/img/groot.avif)
+![Groot](assets/img/groot.png)
 
 ---
 
