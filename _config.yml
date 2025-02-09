@@ -50,6 +50,10 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+  - scope:
+      path: ""
+    values:
+      image: /assets/img/banner.png
 og_image:
   output_dir: "assets/img"
   domain: "creeper.fr"
