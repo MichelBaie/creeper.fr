@@ -6,6 +6,9 @@ locale: fr_FR
 permalink: pretty
 baseurl: ""
 highlighter: none
+author: "Tristan BRINGUIER"
+image: "/assets/img/groot.jpg"   # Chemin vers l'image par défaut
+logo: "/assets/img/groot.jpg"             # Chemin vers le logo du site
 exclude:
   - .jekyll-cache
 compress_html:
