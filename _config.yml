@@ -56,8 +56,6 @@ og_image:
   domain: "creeper.fr"
   header:
     font_family: "Roboto, Bold"
-  content:
-    font_family: "Roboto, Bold"
   image: "assets/img/moi.png"
   force: true
   border_bottom:
