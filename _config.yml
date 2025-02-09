@@ -7,8 +7,8 @@ permalink: pretty
 baseurl: ""
 highlighter: none
 author: "Tristan BRINGUIER"
-image: "/assets/img/groot.jpg"   # Chemin vers l'image par défaut
-logo: "/assets/img/groot.jpg"             # Chemin vers le logo du site
+image: "/assets/img/groot.jpg"
+logo: "/assets/img/groot.jpg"
 exclude:
   - .jekyll-cache
 compress_html:
@@ -21,6 +21,7 @@ plugins:
   - jekyll-paginate
   - jekyll-seo-tag
   - jekyll-sitemap  
+  - jekyll-og-image
 collections:
   pages:
     output: true
@@ -46,3 +47,14 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+og_image:
+  output_dir: "assets/images/og"
+  domain: "creeper.fr"
+  border_bottom:
+    width: 20
+    fill:
+      - "#820C02"
+      - "#A91401"
+      - "#D51F06"
+      - "#DE3F24"
+      - "#EDA895"
