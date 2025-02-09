@@ -4,6 +4,7 @@ title: Avoir des adresses IPv4 chez soi avec Wireguard
 description: Comment j'ai réussi à monter des IP Failover chez moi !
 summary: Ce tutoriel explique comment obtenir des adresses IPv4 supplémentaires via un tunnel wireguard sur un VPS, en détaillant l'achat d'adresses IP, la préparation du VPS, l'installation de wireguard, et la configuration des fichiers nécessaires. Il met également en avant l'importance de la gestion des adresses IP et fournit des instructions pour le déploiement et le diagnostic, tout en remerciant les contributeurs pour leurs améliorations à la documentation.
 tags: [tunnel,hostmyservers,hms,ipfailover,ipfo,wireguard]
+permalink: /wireguard/
 ---
 
 # Introduction
