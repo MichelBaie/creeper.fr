@@ -10,8 +10,8 @@ highlighter: none
 author:
   name: "Tristan BRINGUIER"
   url: "https://creeper.fr/"
-image: "/assets/img/groot.jpg"
-logo: "/assets/img/groot.jpg"
+image: "/assets/img/banner.png"
+logo: "/assets/img/moi.png"
 exclude:
   - .jekyll-cache
 compress_html:
