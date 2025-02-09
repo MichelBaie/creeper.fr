@@ -57,5 +57,3 @@ jobs:
       - name: Déployer sur GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4
-        with:
-          build_dir: './_site'
