@@ -59,7 +59,7 @@ og_image:
   image: "assets/img/moi.png"
   force: true
   border_bottom:
-    width: 40
+    width: 20
     fill:
       - "#4cff99"
       - "#4dd8ff"
