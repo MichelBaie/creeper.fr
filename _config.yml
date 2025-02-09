@@ -9,6 +9,8 @@ highlighter: none
 author: "Tristan BRINGUIER"
 image: "/assets/img/groot.jpg"
 logo: "/assets/img/groot.jpg"
+keep_files:
+  - "assets"
 exclude:
   - .jekyll-cache
 compress_html:
