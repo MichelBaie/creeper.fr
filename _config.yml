@@ -64,3 +64,11 @@ og_image:
       - "#D51F06"
       - "#DE3F24"
       - "#EDA895"
+  header:
+    font_family: "Roboto, Bold"
+    color: "#333333"
+  content:
+    font_family: "Roboto, Bold"
+    color: "#333333"
+  canvas:
+    background_image: "/assets/img/background_banner.png"
