@@ -4,31 +4,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   {%- comment -%}
-  Balise description et auteur
+  Utiliser la description de l'article s'il existe, sinon celle du site.
   {%- endcomment -%}
-  <meta name="description" content="Le site de Creeper">
-  <meta name="author" content="Tristan BRINGUIER">
+  {% if page.description %}
+    <meta name="description" content="{{ page.description | escape }}">
+  {% elsif page.excerpt %}
+    <meta name="description" content="{{ page.excerpt | strip_html | truncate: 160 | escape }}">
+  {% else %}
+    <meta name="description" content="{{ site.description | escape }}">
+  {% endif %}
+  
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://creeper.fr/">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
 
   {%- comment -%}
   Open Graph
   {%- endcomment -%}
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="creeper.fr">
-  <meta property="og:description" content="Le site de Creeper">
-  <meta property="og:url" content="https://creeper.fr/">
-  <meta property="og:image" content="https://creeper.fr/assets/img/groot.jpg">
-  <meta property="og:site_name" content="creeper.fr">
-  <meta property="og:locale" content="fr_FR">
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <meta property="og:title" content="{{ page.title | default: site.title | escape }}">
+  <meta property="og:description" content="{% if page.description %}{{ page.description | escape }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:image" content="{{ page.image | default: '/assets/img/groot.jpg' | absolute_url }}">
+  <meta property="og:site_name" content="{{ site.title | escape }}">
+  <meta property="og:locale" content="{{ site.locale | default: 'fr_FR' }}">
   
   {%- comment -%}
   Twitter Card
   {%- endcomment -%}
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="creeper.fr">
-  <meta name="twitter:description" content="Le site de Creeper">
-  <meta name="twitter:image" content="https://creeper.fr/assets/img/groot.jpg">
+  <meta name="twitter:title" content="{{ page.title | default: site.title | escape }}">
+  <meta name="twitter:description" content="{% if page.description %}{{ page.description | escape }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}">
+  <meta name="twitter:image" content="{{ page.image | default: '/assets/img/groot.jpg' | absolute_url }}">
   
   {%- comment -%}
   JSON-LD unique
@@ -36,34 +42,34 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "url": "https://creeper.fr/",
-    "name": "creeper.fr",
-    "description": "Le site de Creeper",
+    "@type": "{% if page.layout == 'post' %}Article{% else %}WebSite{% endif %}",
+    "url": "{{ page.url | absolute_url }}",
+    "name": "{{ page.title | default: site.title | escape }}",
+    "description": "{% if page.description %}{{ page.description | escape }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}",
     "author": {
       "@type": "Person",
       "name": "Tristan BRINGUIER"
     },
     "publisher": {
       "@type": "Organization",
-      "name": "creeper.fr",
+      "name": "{{ site.title | escape }}",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://creeper.fr/assets/img/groot.jpg"
+        "url": "{{ '/assets/img/groot.jpg' | absolute_url }}"
       }
     }
   }
   </script>
 
-  <title>creeper.fr - Le site de Creeper</title>
+  <title>{{ page.title | default: site.title }}{% if page.title %} - {% endif %}{{ site.description }}</title>
   
   <link rel="shortcut icon" href="/favicon.png">
-  <link rel="alternate" type="application/atom+xml" title="creeper.fr" href="/atom.xml">
-  <link rel="alternate" type="application/json" title="creeper.fr" href="https://creeper.fr/feed.json">
+  <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="/atom.xml">
+  <link rel="alternate" type="application/json" title="{{ site.title }}" href="{{ '/feed.json' | absolute_url }}">
   <link rel="sitemap" type="application/xml" title="sitemap" href="/sitemap.xml">
-
+  
   {%- comment -%}
-  Vos styles inline compilés depuis SCSS
+  Insertion des styles compilés depuis SCSS
   {%- endcomment -%}
   <style>
     {% capture include_to_scssify %}
