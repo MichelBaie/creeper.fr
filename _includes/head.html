@@ -3,104 +3,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  {%- comment -%}
-  Insertion du plugin SEO.
-  Ce plugin (jekyll-seo-tag) gère déjà de nombreux tags SEO.
-  {%- endcomment -%}
   {% seo %}
-
-  {%- comment -%}
-  Balise description :
-  On utilise la description spécifique à la page (ou article),
-  sinon l'extrait, puis la description générique du site.
-  {%- endcomment -%}
-  {% if page.description %}
-    <meta name="description" content="{{ page.description | escape }}">
-  {% elsif page.excerpt %}
-    <meta name="description" content="{{ page.excerpt | strip_html | truncate: 160 | escape }}">
-  {% else %}
-    <meta name="description" content="{{ site.description | escape }}">
-  {% endif %}
-
-  {%- comment -%}
-  URL canonique
-  {%- endcomment -%}
-  <link rel="canonical" href="{{ page.url | absolute_url }}">
-
-  {%- comment -%}
-  Définition d'une image par défaut (pour les pages sans image OG générée)
-  {%- endcomment -%}
-  {% assign default_image = "https://creeper.fr/assets/img/groot.jpg" %}
-
-  {%- comment -%}
-  Balises Open Graph :
-  Si le plugin jekyll-og-image a généré une image pour le post,
-  elle se trouve dans page.og_image.
-  Sinon, on utilise l'image par défaut.
-  {%- endcomment -%}
-  {% if page.og_image %}
-    <meta property="og:image" content="{{ page.og_image }}">
-  {% else %}
-    <meta property="og:image" content="{{ default_image }}">
-  {% endif %}
-
-  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
-  <meta property="og:title" content="{{ page.title | default: site.title | escape }}">
-  <meta property="og:description" content="{% if page.description %}{{ page.description | escape }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}">
-  <meta property="og:url" content="{{ page.url | absolute_url }}">
-  <meta property="og:site_name" content="{{ site.title | escape }}">
-  <meta property="og:locale" content="{{ site.locale | default: 'fr_FR' }}">
-
-  {%- comment -%}
-  Balises Twitter Card.
-  On reprend ici l'image OG générée par le plugin, ou l'image par défaut.
-  {%- endcomment -%}
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ page.title | default: site.title | escape }}">
-  <meta name="twitter:description" content="{% if page.description %}{{ page.description | escape }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}">
-  {% if page.og_image %}
-    <meta name="twitter:image" content="{{ page.og_image }}">
-  {% else %}
-    <meta name="twitter:image" content="{{ default_image }}">
-  {% endif %}
-
-  {%- comment -%}
-  Données structurées JSON-LD
-  {%- endcomment -%}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "{% if page.layout == 'post' %}Article{% else %}WebSite{% endif %}",
-    "url": "{{ page.url | absolute_url }}",
-    "name": "{{ page.title | default: site.title | escape }}",
-    "description": "{% if page.description %}{{ page.description | escape }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}",
-    "author": {
-      "@type": "Person",
-      "name": "Tristan BRINGUIER"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "{{ site.title | escape }}",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "{{ default_image }}"
-      }
-    }
-  }
-  </script>
-
-  <title>
-    {% if page.title %}{{ page.title | escape }} - {% endif %}{{ site.title | escape }}
-  </title>
 
   <link rel="shortcut icon" href="{{ site.baseurl }}/favicon.png">
   <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ site.baseurl }}/atom.xml">
-  <link rel="alternate" type="application/json" title="{{ site.title }}" href="{{ "/feed.json" | prepend: site.baseurl | prepend: site.url }}">
+  <link rel="alternate" type="application/json" title="{{ site.title }}"
+        href="{{ "/feed.json" | prepend: site.baseurl | prepend: site.url }}">
   <link rel="sitemap" type="application/xml" title="sitemap" href="{{ site.baseurl }}/sitemap.xml">
 
-  {%- comment -%}
-  Inclusion des styles compilés depuis SCSS.
-  {%- endcomment -%}
   <style>
     {% capture inline_scss %}
       {% include inline.scss %}
