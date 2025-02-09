@@ -58,11 +58,12 @@ og_image:
   force: true
   verbose: true
   border_bottom:
-    width: 20
+    width: 40
     fill:
       - "#4cff99"
       - "#4dd8ff"
       - "#1d5f99"
+      - "#ffffff"
       - "#091816"
       - "#004840"
       - "#035a00"
