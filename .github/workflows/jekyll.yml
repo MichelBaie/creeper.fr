@@ -50,7 +50,10 @@ jobs:
         run: |
           mkdir -p _site/assets/img
           mv assets/img/posts _site/assets/img/posts
-
+     
+      - name: Téléverser l'artefact
+        uses: actions/upload-pages-artifact@v3
+        
       - name: Déployer sur GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4
