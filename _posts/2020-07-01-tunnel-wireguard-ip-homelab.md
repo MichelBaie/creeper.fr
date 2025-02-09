@@ -455,10 +455,18 @@ Cette **astuce** m'a permis de franchir un **grand pas dans l'auto-hébergement*
 - [@MaelMagnien](https://web.archive.org/web/20240108141946/https://github.com/maelmagnien) : Qui a entièrement testé le tutoriel pour voir que tout fonctionne.
 - [@Twistky](https://github.com/Twistky) : Qui m'a également fait débugger plusieurs fois ma doc.
 - [@Diggyworld](https://github.com/Diggyworld) : Qui a remarqué et passé toute une soirée à trouver une solution pour ces fichus soucis de MTU
-- @titin : Pour avoir trouvé la commande arping pour régler certains soucis de routage
+- [@titin](https://git.feelb.io/Titin) : Pour avoir trouvé la commande arping pour régler certains soucis de routage
 - [@Hecate](https://github.com/TheHecateII) : Pour la commande iptables pour les soucis de MTU
 
 Et plein d'autres personnes qui m'ont envoyé un message sur Discord pour m'aider à améliorer cette documentation ou me remercier.
+
+### Vous souhaitez approfondir ?
+
+Il est possible d’**implémenter différemment** ces **tunnels** **wireguard**, avec un **routeur** **centralisé** qui **distribue** ensuite **les IPs** **aux VMs**. Cela permet d’**éviter** de **déployer** un **profil** **wireguard** **par** **client**. Un **ami** a moi a **rédigé** une **super documentation** pour monter les addresses sur un **routeur** **VyOS** :
+
+[Router un subnet IPv4 chez soi avec WireGuard + VyOS](https://blog.azernet.xyz/router-un-subnet-ipv4-chez-soi-avec-wireguard-vyos-2/)
+
+Si d’autres personnes souhaitent faire figurer leurs « forks » de cette documentation, n’hésitez pas à me DM Discord ou Telegram!
 
 # Si cette documentation vous a été utile...
 
