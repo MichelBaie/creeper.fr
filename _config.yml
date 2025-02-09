@@ -33,19 +33,16 @@ collections:
     output: true
     permalink: /:year/:month/:day/:slug
 defaults:
-  -
-    scope:
+  - scope:
       path: ""
     values:
       layout: "default"
-  -
-    scope:
+  - scope:
       path: ""
       type: "pages"
     values:
       layout: "page"
-  -
-    scope:
+  - scope:
       path: ""
       type: "posts"
     values:
@@ -55,10 +52,6 @@ defaults:
       type: "pages"
     values:
       image: /assets/img/banner.png
-  - scope:
-      path: "about"
-    values:
-      image: /assets/img/groot.jpg
 og_image:
   output_dir: "assets/img"
   domain: "creeper.fr"
