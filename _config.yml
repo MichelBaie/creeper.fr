@@ -1,7 +1,7 @@
 site: creeper.fr
 url: https://creeper.fr
-title: "Creeper.fr"
-description: "tout et rien mais très utile!"
+title: "creeper.fr"
+description: "Tout et rien mais très utile!"
 locale: "fr_FR"
 permalink: pretty
 baseurl: ""
