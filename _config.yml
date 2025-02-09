@@ -1,8 +1,8 @@
 site: creeper.fr
 url: https://creeper.fr
-title: creeper.fr
-description: Le site de Creeper
-locale: fr_FR
+title: "Creeper.fr"
+description: "tout et rien mais très utile!"
+locale: "fr_FR"
 permalink: pretty
 baseurl: ""
 disable_disk_cache: true
