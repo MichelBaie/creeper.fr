@@ -8,16 +8,18 @@ Actuellement étudiant en deuxième année de BUT Réseaux et Télécommunicatio
 
 ## Mon infrastructure
 
+J’héberge sur celle-ci différents services dont certain qui sont ouvert au grand public! [➡️ /apps](https://creeper.fr/apps)
+
 ### Protogen :
 
-- **Processeur :** AMD Ryzen 7 8700G
-- **Mémoire :** 128GB DDR5
-- **Stockage principal :** 4TB NVME
-- **Stockage secondaire :** 3 × 12TB HDD
-- **Connexion :** 8Gbit/s
-- **Hyperviseur :** Proxmox
+- **Processeur :** [AMD Ryzen 7 8700G](https://www.amazon.fr/dp/B0CQ4JBKW3)
+- **Mémoire :** [128GB DDR5](https://www.amazon.fr/dp/B0C34D1BBT)
+- **Stockage principal :** [4TB NVME](https://www.amazon.fr/dp/B0CBYZ6DD1)
+- **Stockage secondaire :** 3 × [12TB HDD](https://www.amazon.fr/dp/B0CFBF7SV8)
+- **Connexion :** [8Gbit/s](8Gbit/s)
+- **Hyperviseur :** [Proxmox](https://proxmox.com/)
 
-**Et quelques VPS chez HostMyServers, PulseHeberg, OVH, Scaleway ...**
+**Et quelques VPS chez [HostMyServers](https://www.hostmyservers.fr/), [PulseHeberg](https://pulseheberg.com/cloud/), [OVH](https://www.ovhcloud.com/fr/vps/), [Scaleway](https://www.scaleway.com/fr/instances-virtuelles/) ...**
 
 ## Me contacter
 
@@ -37,9 +39,12 @@ Si l’un de mes articles vous a été utile ou si vous en retirez des bénéfic
 - **PayPal :** [paypal.me/tbringuier](https://paypal.me/tbringuier)
 - **Revolut :** [revolut.me/bringuiert](https://revolut.me/bringuiert)
 
+## Ce site web est open-source !
+
+N’hésitez pas à y contribuer si jamais vous repérez une erreur ou quelque-chose de pertinent à y intégrer ! Retrouvez le code source dans ce repo [GitHub](https://github.com/MichelBaie/creeper.fr/) !
+
 ## Mon chat, Groot 🐈‍⬛ :
 
 ![Groot](assets/img/groot.png)
 
-Merci de votre visite !  
-N’hésitez pas à consulter mes projets et à me contacter pour échanger sur nos passions communes.
+Merci de votre visite ! 
