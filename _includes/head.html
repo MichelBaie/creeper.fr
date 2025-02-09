@@ -2,10 +2,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   {%- comment -%}
-  Utilisation de la description spécifique à la page (ou article) s'il existe,
-  sinon utilisation de l'extrait, puis de la description générique du site.
+  On utilise la description propre à la page (ou article) s'il existe,
+  sinon l'extrait, sinon la description générique du site.
   {%- endcomment -%}
   {% if page.description %}
     <meta name="description" content="{{ page.description | escape }}">
@@ -14,7 +14,7 @@
   {% else %}
     <meta name="description" content="{{ site.description | escape }}">
   {% endif %}
-  
+
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
 
@@ -25,19 +25,23 @@
   <meta property="og:title" content="{{ page.title | default: site.title | escape }}">
   <meta property="og:description" content="{% if page.description %}{{ page.description | escape }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
-  
+
   {%- comment -%}
-  Génération dynamique de l'image de prévisualisation pour les posts.
-  On encode le titre en remplaçant les '+' par '%20', et on construit le paramètre du logo à partir de son URL absolue.
+  Pour les articles, on génère une image OG dynamique via https://og-image.vercel.app/.
+  On encode le titre et l'URL absolue du logo afin de les passer en paramètres.
+  Le résultat ressemble à :
+  https://og-image.vercel.app/<titre_encodé>.png?theme=light&md=1&fontSize=75px&images=<logo_encodé>
   {%- endcomment -%}
   {% if page.layout == 'post' and page.title %}
     {% assign encoded_title = page.title | url_encode | replace: '+', '%20' %}
-    {% assign logo = '/assets/img/logo.png' | absolute_url | url_encode | replace: '+', '%20' %}
-    {% assign dynamic_image = "https://og-image.vercel.app/" | append: encoded_title | append: ".png?theme=light&md=1&fontSize=75px&images=" | append: logo %}
+    {% assign logo_url = '/assets/img/logo.png' | absolute_url %}
+    {% assign encoded_logo = logo_url | url_encode | replace: '+', '%20' %}
+    {% assign dynamic_image = "https://og-image.vercel.app/" | append: encoded_title | append: ".png?theme=light&md=1&fontSize=75px&images=" | append: encoded_logo %}
     <meta property="og:image" content="{{ dynamic_image }}">
   {% else %}
     <meta property="og:image" content="https://creeper.fr/assets/img/groot.jpg">
   {% endif %}
+
   <meta property="og:site_name" content="{{ site.title | escape }}">
   <meta property="og:locale" content="{{ site.locale | default: 'fr_FR' }}">
 
@@ -54,7 +58,7 @@
   {% endif %}
 
   {%- comment -%}
-  JSON-LD Structuré
+  JSON-LD structuré pour enrichir les données affichées par les moteurs de recherche
   {%- endcomment -%}
   <script type="application/ld+json">
   {
@@ -81,12 +85,12 @@
   <title>
     {% if page.title %}{{ page.title | escape }} - {% endif %}{{ site.title | escape }}
   </title>
-  
+
   <link rel="shortcut icon" href="{{ site.baseurl }}/favicon.png">
   <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ site.baseurl }}/atom.xml">
   <link rel="alternate" type="application/json" title="{{ site.title }}" href="{{ "/feed.json" | prepend: site.baseurl | prepend: site.url }}">
   <link rel="sitemap" type="application/xml" title="sitemap" href="{{ site.baseurl }}/sitemap.xml">
-  
+
   {%- comment -%}
   Inclusion des styles compilés depuis SCSS
   {%- endcomment -%}
