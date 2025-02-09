@@ -4,7 +4,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   {%- comment -%}
-  Utiliser la description de l'article s'il existe, sinon celle du site.
+  Utilisation de la description propre à la page (article) s'il existe,
+  sinon on tente d’utiliser l’extrait, puis la description générique du site.
   {%- endcomment -%}
   {% if page.description %}
     <meta name="description" content="{{ page.description | escape }}">
@@ -24,20 +25,35 @@
   <meta property="og:title" content="{{ page.title | default: site.title | escape }}">
   <meta property="og:description" content="{% if page.description %}{{ page.description | escape }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
-  <meta property="og:image" content="{{ page.image | default: '/assets/img/groot.jpg' | absolute_url }}">
+
+  {%- comment -%}
+  Génération dynamique de l'image de prévisualisation pour les posts.
+  Pour les autres pages, on utilise une image par défaut.
+  {%- endcomment -%}
+  {% if page.layout == 'post' and page.title %}
+    {% assign encoded_title = page.title | url_encode %}
+    {% assign dynamic_image = "https://og-image.vercel.app/" | append: encoded_title | append: ".png?theme=light&md=1&fontSize=75px&images=https%3A%2F%2Fcreeper.fr%2Fassets%2Fimg%2Flogo.png" %}
+    <meta property="og:image" content="{{ dynamic_image }}">
+  {% else %}
+    <meta property="og:image" content="https://creeper.fr/assets/img/groot.jpg">
+  {% endif %}
   <meta property="og:site_name" content="{{ site.title | escape }}">
   <meta property="og:locale" content="{{ site.locale | default: 'fr_FR' }}">
-  
+
   {%- comment -%}
   Twitter Card
   {%- endcomment -%}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ page.title | default: site.title | escape }}">
   <meta name="twitter:description" content="{% if page.description %}{{ page.description | escape }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | truncate: 160 | escape }}{% else %}{{ site.description | escape }}{% endif %}">
-  <meta name="twitter:image" content="{{ page.image | default: '/assets/img/groot.jpg' | absolute_url }}">
-  
+  {% if page.layout == 'post' and page.title %}
+    <meta name="twitter:image" content="{{ dynamic_image }}">
+  {% else %}
+    <meta name="twitter:image" content="https://creeper.fr/assets/img/groot.jpg">
+  {% endif %}
+
   {%- comment -%}
-  JSON-LD unique
+  JSON-LD Structuré
   {%- endcomment -%}
   <script type="application/ld+json">
   {
@@ -55,21 +71,23 @@
       "name": "{{ site.title | escape }}",
       "logo": {
         "@type": "ImageObject",
-        "url": "{{ '/assets/img/groot.jpg' | absolute_url }}"
+        "url": "https://creeper.fr/assets/img/groot.jpg"
       }
     }
   }
   </script>
 
-  <title>{{ page.title | default: site.title }}{% if page.title %} - {% endif %}{{ site.description }}</title>
+  <title>
+    {% if page.title %}{{ page.title | escape }} - {% endif %}{{ site.title | escape }}
+  </title>
   
-  <link rel="shortcut icon" href="/favicon.png">
-  <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="/atom.xml">
-  <link rel="alternate" type="application/json" title="{{ site.title }}" href="{{ '/feed.json' | absolute_url }}">
-  <link rel="sitemap" type="application/xml" title="sitemap" href="/sitemap.xml">
+  <link rel="shortcut icon" href="{{ site.baseurl }}/favicon.png">
+  <link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ site.baseurl }}/atom.xml">
+  <link rel="alternate" type="application/json" title="{{ site.title }}" href="{{ "/feed.json" | prepend: site.baseurl | prepend: site.url }}">
+  <link rel="sitemap" type="application/xml" title="sitemap" href="{{ site.baseurl }}/sitemap.xml">
   
   {%- comment -%}
-  Insertion des styles compilés depuis SCSS
+  Inclusion des styles compilés depuis SCSS
   {%- endcomment -%}
   <style>
     {% capture include_to_scssify %}
