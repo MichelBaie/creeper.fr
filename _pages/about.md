@@ -6,6 +6,8 @@ description: Étudiant & sysadmin !
 
 Actuellement étudiant en deuxième année de BUT Réseaux et Télécommunications au sein de l'[IUT de Villetaneuse](https://iutv.univ-paris13.fr/), je profite de mon temps libre pour transmettre mes connaissances à travers des articles sur ce blog. Je parle majoritairement d'auto-hébergement, sujet qui me passionne depuis tout petit.
 
+<img src="../assets/img/moi_irl.png" style="zoom:10%;" />
+
 ## Mon infrastructure
 
 J’héberge sur celle-ci différents services dont certain qui sont ouvert au grand public! [➡️ /apps](https://creeper.fr/apps)
