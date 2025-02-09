@@ -48,7 +48,7 @@ defaults:
     values:
       layout: "post"
 og_image:
-  output_dir: "assets/og"
+  output_dir: "assets/img"
   domain: "creeper.fr"
   force: true
   verbose: true
