@@ -8,7 +8,7 @@ Actuellement étudiant en deuxième année de BUT Réseaux et Télécommunicatio
 
 ## Mon infrastructure
 
-### Protogen (fait maison) :
+### Protogen :
 
 - **Processeur :** AMD Ryzen 7 8700G
 - **Mémoire :** 128GB DDR5
@@ -27,6 +27,8 @@ Vous pouvez me joindre :
 * Sur Telegram : [**@MichelBaie**](https://t.me/MichelBaie)
 * Sur Linkedin : [**in/tbringuier**](https://www.linkedin.com/in/tbringuier)
 * Via Discord : @creeper.fr, vous pouvez également rejoindre [**mon discord**](https://discord.gg/34tTSGRRyb).
+
+![discordprofile](https://discordprofile.creeper.fr)
 
 ## Me faire un don
 
