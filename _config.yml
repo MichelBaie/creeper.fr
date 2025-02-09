@@ -56,19 +56,11 @@ og_image:
   domain: "creeper.fr"
   force: true
   verbose: true
-  border_bottom:
-    width: 20
-    fill:
-      - "#820C02"
-      - "#A91401"
-      - "#D51F06"
-      - "#DE3F24"
-      - "#EDA895"
   header:
     font_family: "Roboto, Bold"
-    color: "#333333"
+    color: "#FFFFFF"
   content:
     font_family: "Roboto, Bold"
-    color: "#333333"
+    color: "#FFFFFF"
   canvas:
     background_image: "/assets/img/background_banner.png"
