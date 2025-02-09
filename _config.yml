@@ -56,7 +56,7 @@ defaults:
     values:
       image: /assets/img/banner.png
   - scope:
-      path: "/about"
+      path: "about"
     values:
       image: /assets/img/groot.jpg
 og_image:
