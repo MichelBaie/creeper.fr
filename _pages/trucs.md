@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Trucs...
+title: Plein de Trucs en vrac...
 description: plein de choses
 ---
 

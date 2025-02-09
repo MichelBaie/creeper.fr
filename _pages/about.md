@@ -28,7 +28,6 @@ Vous pouvez me joindre :
 * Sur Linkedin : [**in/tbringuier**](https://www.linkedin.com/in/tbringuier)
 * Via Discord : @creeper.fr, vous pouvez également rejoindre [**mon discord**](https://discord.gg/34tTSGRRyb).
 
-
 ![discordprofile](https://discordprofile.creeper.fr)
 
 ## Me faire un don
