@@ -50,6 +50,8 @@ defaults:
 og_image:
   output_dir: "assets/og"
   domain: "creeper.fr"
+  force: true
+  verbose: true
   border_bottom:
     width: 20
     fill:
