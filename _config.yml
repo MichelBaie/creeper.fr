@@ -55,7 +55,7 @@ og_image:
   domain: "creeper.fr"
   header:
     font_family: "Roboto, Bold"
-  image: "assets/img/moi.png"
+  image: "https://avatars.githubusercontent.com/u/39345534"
   force: true
   border_bottom:
     width: 20
