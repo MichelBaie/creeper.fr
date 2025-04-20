@@ -33,7 +33,6 @@ Les brandings de l’IUT de Villetaneuse au format .svg -> [ici](https://forever
 # WatchTower
 
 ```yml
-version: "3"
 services:
   watchtower:
     container_name: watchtower
@@ -47,5 +46,13 @@ services:
       - WATCHTOWER_INCLUDE_RESTARTING=true
       - WATCHTOWER_POLL_INTERVAL=3600
       - WATCHTOWER_ROLLING_RESTART=true
+```
+
+# Mises à jour automatiques
+
+```
+MAILTO=""
+0 * * * * DEBIAN_FRONTEND=noninteractive apt update -qq && \
+          DEBIAN_FRONTEND=noninteractive apt full-upgrade -y -qq > /dev/null 2>&1
 ```
 
