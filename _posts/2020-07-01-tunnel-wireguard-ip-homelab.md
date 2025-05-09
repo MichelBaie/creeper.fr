@@ -468,7 +468,7 @@ Il est possible d’**implémenter différemment** ces **tunnels** **wireguard**
 
 Si d’autres personnes souhaitent faire figurer leurs « forks » de cette documentation, n’hésitez pas à me DM Discord ou Telegram!
 
-# Si cette documentation vous a été utile...
+# Si vous avez apprécié cette documentation…
 
 **N'hésitez pas à me [faire un don](https://creeper.fr/about#me-faire-un-don) pour me remercier et me soutenir dans le maintien de cette documentation face aux mises à jour furtives de Debian.**
 
