@@ -472,7 +472,7 @@ Si d’autres personnes souhaitent faire figurer leurs « forks » de cette do
 
 **N'hésitez pas à me [faire un don](https://creeper.fr/about#me-faire-un-don) pour me remercier et me soutenir dans le maintien de cette documentation face aux mises à jour furtives de Debian.**
 
-##### [Avoir des adresses IPv4 chez soi avec Wireguard](https://creeper.fr/2020/07/01/tunnel-wireguard-ip-homelab) by [Tristan BRINGUIER](https://creeper.fr) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+##### [Avoir des adresses IPv4 chez soi avec Wireguard](https://creeper.fr/wireguard) by [Tristan BRINGUIER](https://creeper.fr) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 #### Implémentations futures :
 
