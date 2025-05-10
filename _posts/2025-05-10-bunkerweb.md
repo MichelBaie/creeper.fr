@@ -101,11 +101,11 @@ x-bw-env: &bw-env
   DATABASE_URI: "mariadb+pymysql://bunkerweb:motdepasseachanger@bw-db:3306/db"
 
 ###############################################################################
-##                                   Services                                  #
+##                                   Services                                ##
 ###############################################################################
 services:
   ###########################################################################
-  ## 1. Reverse-proxy / WAF                                                  #
+  ## 1. Reverse-proxy / WAF                                                ##
   ###########################################################################
   bunkerweb:
     image: bunkerity/bunkerweb:latest      ## Utilise la dernière image stable
@@ -130,7 +130,7 @@ services:
         max-file: "5"                   ## Garde 5 fichiers (≈ 50 Mo max)
 
   ###########################################################################
-  ## 2. Ordonnanceur (scheduler)                                              #
+  ## 2. Ordonnanceur (scheduler)                                           ##
   ###########################################################################
   bw-scheduler:
     image: bunkerity/bunkerweb-scheduler:latest
@@ -148,7 +148,7 @@ services:
       - bunker-db                        ## Accès direct à la base
 
   ###########################################################################
-  ## 3. Interface Web d’administration                                        #
+  ## 3. Interface Web d’administration                                     ##
   ###########################################################################
   bw-ui:
     image: bunkerity/bunkerweb-ui:latest
@@ -160,7 +160,7 @@ services:
       - bunker-db                        ## Doit voir MariaDB
 
   ###########################################################################
-  ## 4. Base de données MariaDB                                               #
+  ## 4. Base de données MariaDB                                             ##
   ###########################################################################
   bw-db:
     image: mariadb:11                    ## Version 11.x LTS
@@ -182,7 +182,7 @@ services:
       - bunker-db                        ## Isolé du reste pour sécurité
 
 ###############################################################################
-##                                  Réseaux                                    #
+##                                  Réseaux                                  ##
 ###############################################################################
 networks:
   ## Réseau frontal (reverse-proxy, scheduler, UI, etc.)
@@ -198,7 +198,7 @@ networks:
     name: bunker-db
 
 ###############################################################################
-##                                  Volumes                                    #
+##                                  Volumes                                  ##
 ###############################################################################
 volumes:
   ## Policies, certificats, listes IP, etc.
