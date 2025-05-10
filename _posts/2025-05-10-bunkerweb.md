@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Mettre en place un reverse proxy en toute sécurité avec l’aide d’un WAF (BunkerWeb)
+title: Mettre en place un reverse proxy sécurisé grâce au WAF BunkerWeb
 description: Rédiger la description de la documentation
 summary: Rédiger un sommaire
 tags: [bunkerweb, waf, nginx, selfhosting, reverse-proxy]
