@@ -460,7 +460,7 @@ Cette **astuce** m'a permis de franchir un **grand pas dans l'auto-hébergement*
 
 Et plein d'autres personnes qui m'ont envoyé un message sur Discord pour m'aider à améliorer cette documentation ou me remercier.
 
-### Vous souhaitez approfondir ?
+### Vous souhaitez approfondir
 
 Il est possible d’**implémenter différemment** ces **tunnels** **wireguard**, avec un **routeur** **centralisé** qui **distribue** ensuite **les IPs** **aux VMs**. Cela permet d’**éviter** de **déployer** un **profil** **wireguard** **par** **client**. Un **ami** a moi a **rédigé** une **super documentation** pour monter les addresses sur un **routeur** **VyOS** :
 
