@@ -318,4 +318,4 @@ Et voici ! Votre service est déployé !
 
 **N'hésitez pas à me [faire un don](https://creeper.fr/about#me-faire-un-don) pour me remercier et me soutenir dans le maintien de cette documentation face aux mises à jour furtives de Debian.**
 
-##### [Comment mettre en place un reverse proxy en toute sécurité avec l’aide d’un WAF (BunkerWeb) ?](https://creeper.fr/bunkerweb) by [Tristan BRINGUIER](https://creeper.fr) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+##### [Mettre en place un reverse proxy sécurisé grâce au WAF BunkerWeb](https://creeper.fr/bunkerweb) by [Tristan BRINGUIER](https://creeper.fr) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
