@@ -223,11 +223,11 @@ sed -i -e "s|motdepasseachanger|$(openssl rand -base64 32 | tr -dc 'A-Za-z0-9' |
 
 1. **Rendez vous sur `https://url-de-votre-bunker.web/setup` afin de retrouver la page de démarrage suivante :**
 
-   ![bunkerweb-setup1.avif](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-setup1.avif)
+   ![bunkerweb-setup1.avif](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-setup1.avif)
 
    **Dans un premier temps**, vous devez **renseigner** les **propriétés** du **compte administrateur**.
 2. **Ensuite, vous devez renseigner le hostname public de votre instance BunkerWeb.**  
-   ![bunkerweb-setup2.avif](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-setup2.avif)
+   ![bunkerweb-setup2.avif](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-setup2.avif)
 
 
    > ⚠️ **Attention !!** Il ne faut **surtout pas toucher** à **UI Host** et **UI URL** !!
@@ -245,17 +245,17 @@ Pour cela :
 3. **Une fois toutes les informations renseignées, BunkerWeb propose un récapitulatif des paramètres renseignés précédemment.**  
    Vous pouvez **valider** et **lancer l’installation**.
 
-   ![bunkerweb-setup3.avif](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-setup3.avif)
+   ![bunkerweb-setup3.avif](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-setup3.avif)
    
    **Après avoir patienté** le temps de **la** **mise en place** de BunkerWeb, vous devriez être **redirigé sur la page de** **login**. **Vous pouvez vous y connecter**.
 
-   ![bunkerweb-setup4.avif](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-setup4.avif)
+   ![bunkerweb-setup4.avif](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-setup4.avif)
 
 ## Présentation de l’interface web et paramétrage rapide
 
 **Bienvenue sur l’interface web de** **BunkerWeb** !
 
-![bunkerweb-interface1.avif](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-interface1.avif)
+![bunkerweb-interface1.avif](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-interface1.avif)
 
 **Sur la page d’accueil**, vous **retrouverez** quelques **statistiques** **essentielles** liées à **votre** **instance**.  
 **Dans la barre latérale**, à gauche, se trouvent les **menus suivants** :
@@ -276,7 +276,7 @@ Pour cela :
 
 **Nous allons maintenant passer en revue** **quelques paramètres** **pratiques**, pour ce faire, **rendez-vous dans la rubrique** « **Global Config** »
 
-![bunkerweb-interface2.avif](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-interface2.avif)
+![bunkerweb-interface2.avif](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-interface2.avif)
 
 **En haut à gauche**, le **menu déroulant** vous **permet de choisir la configuration de chaque plug-in** ; **en haut à droite**, le **bouton** **Save** enregistre vos changements.
 **Ci-dessous**, vous trouverez **les principaux réglages** sur mon **instance personnelle** :
@@ -328,7 +328,7 @@ Ouvrez la section **Services** puis cliquez sur **Create new service**. Suivez e
 
 ### 1 | Web service – *Front service*
 
-![Capture : création d’un service — étape 1](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice1.avif)
+![Capture : création d’un service — étape 1](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice1.avif)
 
 * **`SERVER_NAME`** : nom(s) de domaine à protéger.
 * **Let’s Encrypt** : si **`AUTO_LETS_ENCRYPT`** n’est *pas* à `true`, renseignez les champs manuellement.
@@ -338,14 +338,14 @@ Ces réglages concernent la *face publique* du reverse-proxy exposée sur Intern
 
 ### 2 | Web service – *Upstream server*
 
-![Capture : création d’un service — étape 2](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice2.avif)
+![Capture : création d’un service — étape 2](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice2.avif)
 
 * **`REVERSE_PROXY_HOST`** : URL interne du service (incluant le schéma `http://` ou `https://`).
 * **`REVERSE_PROXY_WS`** : activez-le pour la prise en charge des WebSockets.
 
 ### 3 | HTTP – *General*
 
-![Capture : création d’un service — étape 3](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice3.avif)
+![Capture : création d’un service — étape 3](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice3.avif)
 
 | Variable              | Rôle                            | Suggestion                                                       |
 | --------------------- | ------------------------------- | ---------------------------------------------------------------- |
@@ -355,7 +355,7 @@ Ces réglages concernent la *face publique* du reverse-proxy exposée sur Intern
 
 ### 4 | HTTP – *Headers*
 
-![Capture : création d’un service — étape 4](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice4.avif)
+![Capture : création d’un service — étape 4](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice4.avif)
 
 Vous pouvez ici :
 
@@ -366,7 +366,7 @@ Vous pouvez ici :
 
 ### 5 | Security – *Bad behavior*
 
-![Capture : création d’un service — étape 5](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice5.avif)
+![Capture : création d’un service — étape 5](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice5.avif)
 
 Le module **Bad behavior** bannit les clients générant trop d’erreurs.
 
@@ -381,13 +381,13 @@ Les valeurs par défaut sont généralement suffisantes.
 
 ### 6 | Security – *Blacklisting*
 
-![Capture : création d’un service — étape 6](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice6.avif)
+![Capture : création d’un service — étape 6](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice6.avif)
 
 Activez **`USE_BLACKLIST`** pour bloquer immédiatement les IP ou user-agents référencés dans les listes internes ou personnelles. Par défaut, la configuration protège déjà contre les robots les plus agressifs.
 
 ### 7 | Security – *Limiting*
 
-![Capture : création d’un service — étape 7](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice7.avif)
+![Capture : création d’un service — étape 7](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice7.avif)
 
 * **`USE_LIMIT_CONN`** : limite le nombre de connexions simultanées.
 * **`USE_LIMIT_REQ`** : plafonne le débit de requêtes (HTTP 429 en cas d’excès).
@@ -396,7 +396,7 @@ Activez **`USE_BLACKLIST`** pour bloquer immédiatement les IP ou user-agents r�
 
 ### 8 | Security – *Antibot*
 
-![Capture : création d’un service — étape 8](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice8.avif)
+![Capture : création d’un service — étape 8](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice8.avif)
 
 * **`USE_ANTIBOT`** : active la protection.
 * **`ANTIBOT_MODE`** : `captcha` (résolution manuelle) ou `javascript` (tests invisibles).
@@ -406,7 +406,7 @@ Si jamais vous avez besoin de rajouter un captcha, choisissez `javascript` tant 
 
 ### 9 | Security – *Auth basic*
 
-![Capture : création d’un service — étape 9](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice9.avif)
+![Capture : création d’un service — étape 9](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice9.avif)
 
 Placez un verrou HTTP Basic en activant **`USE_AUTH_BASIC`** puis :
 
@@ -415,7 +415,7 @@ Placez un verrou HTTP Basic en activant **`USE_AUTH_BASIC`** puis :
 
 ### 10 | Security – *Country*
 
-![Capture : création d’un service — étape 10](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice10.avif)
+![Capture : création d’un service — étape 10](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice10.avif)
 
 * **`BLACKLIST_COUNTRY`** : bloque la liste de pays indiqués (`RU KP` par ex.).
 * **`WHITELIST_COUNTRY`** : autorise *uniquement* les pays listés (`FR BE`, etc.).
@@ -424,7 +424,7 @@ Toute requête provenant d’un pays exclu reçoit un **403 Forbidden**.
 
 ### 11 | Security – *ModSecurity*
 
-![Capture : création d’un service — étape 11](https://forevercdn.creeper.fr/img/bunkerdoc/bunkerweb-createservice11.avif)
+![Capture : création d’un service — étape 11](https://forevercdn.creeper.fr/img/docs/bunkerdoc/bunkerweb-createservice11.avif)
 
 ModSecurity analyse chaque requête / réponse à l’aide du Core Rule Set (OWASP). Conservez les réglages par défaut, puis excluez au besoin des règles via la rubrique **Custom configuration**.
 
