@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Mettre en place un reverse-proxy sécurisé grâce au WAF BunkerWeb
-description: Cette documentation guide pas à pas l’auto-hébergement d’un reverse-proxy robuste en s’appuyant sur BunkerWeb, un WAF open-source français « secure by default ». Après avoir rappelé les enjeux de sécurité souvent négligés avec NGINX, Caddy ou HAProxy, elle expose les atouts de BunkerWeb (OWASP CRS, durcissement TLS, bannissement automatique, interface Web, plugins) puis accompagne le lecteur depuis les pré-requis matériel/DNS jusqu’au déploiement Docker Compose, à la première configuration via l’UI et à la mise en protection d’un service exemplaire.
-summary: Cette documentation explique comment sécuriser ses applications auto-hébergées en déployant BunkerWeb, un WAF open-source français basé sur NGINX. Après avoir montré les limites d’un simple reverse-proxy, elle détaille les atouts « secure by default » de BunkerWeb (OWASP CRS, durcissement TLS, bannissement automatique, interface Web, plugins) puis guide l’utilisateur depuis les pré-requis matériels, réseau et DNS jusqu’au lancement d’un stack Docker Compose, à l’assistant de configuration (Let’s Encrypt inclus) et à la protection fine d’un service : réglages HTTP, cache, rate-limiting, antibot, listes noires, filtrage pays, ModSecurity, etc. Au terme du tutoriel, le lecteur possède un reverse-proxy robuste, souverain et entièrement maîtrisé pour exposer ses services en toute confiance.
+description: Cette documentation guide pas à pas l’auto-hébergement d’un reverse-proxy robuste en s’appuyant sur BunkerWeb, un WAF open-source français..
+summary: Cette documentation explique comment sécuriser ses applications auto-hébergées en déployant BunkerWeb, un WAF open-source français.
 tags: [bunkerweb, waf, nginx, selfhosting, reverse-proxy]
 permalink: /bunkerweb/
 ---
