@@ -25,7 +25,7 @@ Ces **limitations** m’ont amené à **mettre en place une solution pour avoir 
 
 J'ai choisi [**HostMyServers**](https://www.hostmyservers.fr/), un **hébergeur français** 🇫🇷 avec **plusieurs années d'existence**, car ils proposent des **tarifs très intéressant**s au niveau du **réseau** et la **qualité de service est correcte**. Le premier **[VPS SSD](https://www.hostmyservers.fr/vps-ssd)** suffit amplement pour un **traffic raisonnable (~250Mbps)** dans le **tunnel** et inclus une **protection Anti-DDOS basique** **contre les attaques simples**. Leur **support** via le site est relativement **réactif**, mais je n'ai **pas rencontré de problèmes** après plus de deux ans chez eux.
 
-![tarifs HMS](https://forevercdn.creeper.fr/img/docs/wireguardoc/doc-prixhms.avif)
+![tarifs HMS](https://forevercdn.creeper.fr/img/docs/wireguarddoc/doc-prixhms.avif)
 
 Ce qui nous concerne le plus, c’est le **tarif des adresses IP supplémentaires**. Chez HMS, elles **coûtent 2€ à vie**.
 
@@ -39,15 +39,15 @@ Depuis la rubrique “**Configuration**” sur votre VPS vous pouvez cliquer sur
 
 Voici les tarifs proposés par **HostMyServers** :
 
-![Tarif IP HMS](https://forevercdn.creeper.fr/img/docs/wireguardoc/doc-prixiphms.avif)
+![Tarif IP HMS](https://forevercdn.creeper.fr/img/docs/wireguarddoc/doc-prixiphms.avif)
 
 Je vous **recommande** de **prendre des adresses IPv4 Supplémentaires à l’unité**. (les blocs ne sont pas assez intuitifs à mon goût dans l’espace client pour le moment)
 
 Une fois l’**adresse IP achetée**, votre panel devrait **ressembler à ceci** :
 
-![Panel HMS IP](https://forevercdn.creeper.fr/img/docs/wireguardoc/doc-ip1.avif)
+![Panel HMS IP](https://forevercdn.creeper.fr/img/docs/wireguarddoc/doc-ip1.avif)
 
-![Panel HMS IP](https://forevercdn.creeper.fr/img/docs/wireguardoc/doc-ip2.avif)
+![Panel HMS IP](https://forevercdn.creeper.fr/img/docs/wireguarddoc/doc-ip2.avif)
 
 **Notez bien** pour la suite du tutoriel que :
 
@@ -64,11 +64,11 @@ Une fois l’**adresse IP achetée**, votre panel devrait **ressembler à ceci**
 
 **Une fois votre VPS livré**, rendez-vous dans votre **espace client** pour **choisir sa distribution**. Nous installons **Debian 12**.
 
-![Install VPS](https://forevercdn.creeper.fr/img/docs/wireguardoc/doc-panelhmsinstallvps.avif)
+![Install VPS](https://forevercdn.creeper.fr/img/docs/wireguarddoc/doc-panelhmsinstallvps.avif)
 
 **Une fois le VPS installé**, vous **recevrez** les **identifiants** pour s’y connecter sur votre **adresse email** client.
 
-![VPS installé](https://forevercdn.creeper.fr/img/docs/wireguardoc/doc-hmsmailinstalled.avif)
+![VPS installé](https://forevercdn.creeper.fr/img/docs/wireguarddoc/doc-hmsmailinstalled.avif)
 
 **Connectez-vous** y avec un **client SSH** comme [**PuTTY**](https://www.putty.org/) ou [**Termius**](https://termius.com/).
 
