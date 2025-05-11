@@ -346,62 +346,21 @@ curl ifconfig.me
 **Si jamais le profil ne fonctionne pas**, **vérifiez que vous n’avez pas mélangé les adresses IPs** et **relisez la documentation**. Il peut arriver qu’il y ai des soucis de routage sur le VPS HMS. Dans ce cas **voici la commande à exécuter SUR LE VPS HMS** pour **résoudre le problème** :
 
 ```bash
-arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire>
+arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire> -i eth0
 ```
 
 **L’IP devrait de nouveau fonctionner !**
 
-**Si jamais le problème persiste**, il faut **implémenter** une **crontab** qui **exécute un script** arping.sh **toutes les 5 minutes**. Voici une implémentation **générée avec le Chat** [🐈‍⬛](https://chat.mistral.ai/):
+**Si jamais le problème persiste**, il faut **implémenter** une **crontab** qui **exécute la commande arping toutes les 5 minutes**. Voici une implémentation provenant d’[Azery](https://blog.azernet.xyz/router-un-subnet-ipv4-chez-soi-avec-wireguard-vyos-2/) :
 
-### Étape 1 : Créer le script `arping.sh`
+### Étape 1 : Créer le fichier `ips`
 
-1. **Ouvrir un terminal** sur votre VPS.
-
-2. **Créer le fichier `arping.sh`** dans le répertoire `/opt` :
-
-   ```bash
-   sudo nano /opt/arping.sh
-   ```
-
-3. **Ajouter le contenu suivant** au fichier `arping.sh` :
-   ```bash
-   #!/bin/bash
+1. **Créer le fichier `ips`** dans le répertoire `/root` :
    
-   # Chemin du fichier contenant les adresses IP
-   ip_file="/opt/ips"
-   
-   # Vérification de l'existence du fichier
-   if [[ ! -f "$ip_file" ]]; then
-     echo "Le fichier $ip_file est introuvable."
-     exit 1
-   fi
-   
-   # Boucle sur chaque IP du fichier
-   while IFS= read -r ip; do
-     # Vérification basique de l'adresse IP
-     if [[ $ip =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
-       echo "Envoi d'ARPING pour l'adresse : $ip"
-       /usr/sbin/arping -q -c1 -P "$ip" -S "$ip" -i ens18
-     else
-       echo "Adresse IP invalide détectée dans le fichier : $ip"
-     fi
-   done < "$ip_file"
-   ```
-
-4. **Enregistrer et quitter** l'éditeur (`CTRL + X`, puis `Y`, puis `Entrée`).
-
-5. **Rendre le script exécutable** :
    ```bash
-   sudo chmod +x /opt/arping.sh
+   sudo nano /root/ips
    ```
-
-### Étape 2 : Créer le fichier `ips`
-
-1. **Créer le fichier `ips`** dans le répertoire `/opt` :
-   ```bash
-   sudo nano /opt/ips
-   ```
-
+   
 2. **Ajouter les adresses IP** que vous utilisez avec Wireguard, une par ligne. Par exemple :
 
    ```
@@ -411,18 +370,19 @@ arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire>
 
 3. **Enregistrer et quitter** l'éditeur (`CTRL + X`, puis `Y`, puis `Entrée`).
 
-### Étape 3 : Configurer la crontab
+### Étape 2 : Configurer la crontab
 
 1. **Ouvrir la crontab** pour l'utilisateur actuel :
    ```bash
    crontab -e
    ```
 
-2. **Ajouter une nouvelle tâche cron** pour exécuter le script `arping.sh` toutes les 5 minutes :
+2. **Ajouter une nouvelle tâche cron** pour exécuter la commande arping toutes les 5 minutes :
+   
    ```bash
-   */5 * * * * /opt/arping.sh
+   */5 * * * * for arg in $(< /root/ips); do arping -q -c1 -P $arg -S $arg -i eth0; done
    ```
-
+   
 3. **Enregistrer et quitter** l'éditeur (`CTRL + X`, puis `Y`, puis `Entrée`).
 
 ### Étape 4 : Vérifier la configuration
@@ -433,12 +393,13 @@ arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire>
    crontab -l
    ```
 
-2. **Vérifier que le script fonctionne** en l'exécutant manuellement une première fois :
+2. **Vérifier que la commande fonctionne** en l'exécutant manuellement une première fois :
+   
    ```bash
-   sudo /opt/arping.sh
+   for arg in $(< /root/ips); do arping -q -c1 -P $arg -S $arg -i eth0; done
    ```
 
-Ces étapes devraient vous permettre de configurer le script `arping.sh` pour qu'il soit exécuté toutes les 5 minutes via une tâche cron, envoyant ainsi des requêtes ARPING pour chaque adresse IP listée dans le fichier `/opt/ips`.
+Ces étapes devraient vous permettre de configurer la crontab pour que la commande arping soit exécuté toutes les 5 minutes via une tâche cron, envoyant ainsi des requêtes ARPING pour chaque adresse IP listée dans le fichier `/opt/ips`.
 
 # Conclusion & Remerciements
 
@@ -477,5 +438,4 @@ Si d’autres personnes souhaitent faire figurer leurs « forks » de cette do
 #### Implémentations futures :
 
 - Firewalling avec UFW
-- Meilleure implémentation de arping (via doc Azery)
 - Routage bloc IPv6

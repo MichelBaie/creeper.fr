@@ -444,3 +444,8 @@ J’améliorerai cette documentation au fil du temps en fonction des situations 
 **N'hésitez pas à me [faire un don](https://creeper.fr/about#me-faire-un-don) pour me remercier et me soutenir dans le maintien de cette documentation et plus généralement de ce blog.**
 
 ###### [Mettre en place un reverse-proxy sécurisé grâce au WAF BunkerWeb](https://creeper.fr/bunkerweb) by [Tristan BRINGUIER](https://creeper.fr) is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+#### Implémentations futures :
+
+- Ajout d’exceptions ModSecurity
+- Ajout de cas par cas applications Authentik
