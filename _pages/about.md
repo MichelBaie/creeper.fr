@@ -6,7 +6,7 @@ description: Étudiant & SysAdmin !
 
 Actuellement étudiant en deuxième année de BUT Réseaux et Télécommunications au sein de l’[IUT de Villetaneuse](https://iutv.univ-paris13.fr/), je profite de mon temps libre pour transmettre mes connaissances à travers des articles sur ce blog. Je parle majoritairement d’auto-hébergement, sujet qui me passionne depuis tout petit.
 
-<img src="https://forevercdn.creeper.fr/moi/pdp-datacenter.png" style="display: block; margin: 0 auto; zoom:10%;" />
+<img src="https://forevercdn.creeper.fr/moi/pdp-datacenter.avif" style="display: block; margin: 0 auto; zoom:10%;" />
 
 ## L’auto-hébergement
 
@@ -36,6 +36,6 @@ N’hésitez pas à y contribuer si jamais vous repérez une erreur ou quelque c
 
 ## Mon chat, Groot 🐈‍⬛ :
 
-![Groot](assets/img/groot.png)
+![Groot](assets/img/groot.avif)
 
 Merci de votre visite, à très bientôt !

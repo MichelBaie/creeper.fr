@@ -20,7 +20,7 @@ Permet de faire passer tout son traffic par Cloudflare et ainsi bénéficier d�
 
 # Marionnet
 
-![Marionnet VM](https://forevercdn.creeper.fr/img/marionnet.png)
+![Marionnet VM](https://forevercdn.creeper.fr/img/marionnet.avif)
 
 Machine virtuelle [Debian](https://www.debian.org/) 11 avec le logiciel [Marionnet](https://marionnet.org/site/index.php/fr/) installé dessus en démarrage automatique.
 

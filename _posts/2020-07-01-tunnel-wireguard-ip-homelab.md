@@ -45,9 +45,9 @@ Je vous **recommande** de **prendre des adresses IPv4 Supplémentaires à l’un
 
 Une fois l’**adresse IP achetée**, votre panel devrait **ressembler à ceci** :
 
-![Panel HMS IP](https://forevercdn.creeper.fr/img/doc-ip1.png)
+![Panel HMS IP](https://forevercdn.creeper.fr/img/doc-ip1.avif)
 
-![Panel HMS IP](https://forevercdn.creeper.fr/img/doc-ip2.png)
+![Panel HMS IP](https://forevercdn.creeper.fr/img/doc-ip2.avif)
 
 **Notez bien** pour la suite du tutoriel que :
 
@@ -68,7 +68,7 @@ Une fois l’**adresse IP achetée**, votre panel devrait **ressembler à ceci**
 
 **Une fois le VPS installé**, vous **recevrez** les **identifiants** pour s’y connecter sur votre **adresse email** client.
 
-![VPS installé](https://forevercdn.creeper.fr/img/doc-hmsmailinstalled.png)
+![VPS installé](https://forevercdn.creeper.fr/img/doc-hmsmailinstalled.avif)
 
 **Connectez-vous** y avec un **client SSH** comme [**PuTTY**](https://www.putty.org/) ou [**Termius**](https://termius.com/).
 
