@@ -4,17 +4,17 @@ title: Plein de Trucs en vrac...
 description: plein de choses
 ---
 
-# Clés SSH
+# Clé SSH
 
-Creeper :
+https://creeper.fr/ssh
 
 ```bash
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxpszvf6JtwApc4/c5PddoQ3ZGBiz+Y0WT6a0FPnb1xYpEBjo3p6Pl/DHFtzAzdEp+IymRzRGXA3tiCJf3KoThMyvqT1v0rNMAhRZKRnHPK4tBhaF3Yas9aCLwsiH767d5WVZNUlivq/IZkeSfEk7R3ybH/ZtQj9HCBzzfrXrlXKpKmayL9X8mw8n0lIDs12QbZBGbTEw7/E7Rz6+4ElIdJqVAvLsT0IC+2TRWaDxzDlbrV7ulEhZGKhdLR2jL5sSymgrqIxyE9RWv/Gin5gNF5h9OpY1rronWZHhTk/CMjBv4eIKKunGK1+5bmf2x+BhGtPF1srEQP+twTrgcvw3D
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDKyJSe0d7Z+KTGlAMwWFn+LC6UbrpPsvWuRmxTaeBjt tbringuier2025
 ```
 
 # Cloudflare Warp
 
-Permet de faire passer tout son traffic par Cloudflare et ainsi bénéficier d’un bien meilleur peering.
+Permet de faire passer tout son traffic par Cloudflare et ainsi bénéficier d’un bien meilleur peering à l’international.
 
 [Télécharger ici](https://one.one.one.one/)
 
