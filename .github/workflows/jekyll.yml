@@ -33,7 +33,7 @@ jobs:
       - name: Configurer Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.4'
+          ruby-version: '3'
           bundler-cache: true
           cache-version: 0
 
