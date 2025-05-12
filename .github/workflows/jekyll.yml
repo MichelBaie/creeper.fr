@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Installer les dépendances système
-        run: sudo apt-get install -y libvips
+        run: sudo apt update && sudo apt full-upgrade -y && sudo apt-get install -y libvips
 
       - name: Configurer Ruby
         uses: ruby/setup-ruby@v1
