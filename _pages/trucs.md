@@ -6,7 +6,7 @@ description: plein de choses
 
 # Clé SSH
 
-https://creeper.fr/ssh
+https://creeper.fr/ssh.key
 
 ```bash
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDKyJSe0d7Z+KTGlAMwWFn+LC6UbrpPsvWuRmxTaeBjt tbringuier_2025
