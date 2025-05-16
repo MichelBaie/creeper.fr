@@ -19,7 +19,7 @@ Ces **limitations** m’ont amené à **mettre en place une solution pour avoir 
 
 # Principe de fonctionnement
 
-![Comment fonctionne l'internet](https://forevercdn.creeper.fr/img/docs/wireguardoc/doc-schema-hms.avif)
+![Comment fonctionne l'internet](https://forevercdn.creeper.fr/img/docs/wireguarddoc/doc-schema-hms.avif)
 
 # Le choix de l’hébergeur
 
