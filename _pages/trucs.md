@@ -56,3 +56,20 @@ MAILTO=""
           DEBIAN_FRONTEND=noninteractive apt full-upgrade -y -qq > /dev/null 2>&1
 ```
 
+# Anonymisation .zshrc
+
+```shell
+erasemeta() {
+    for file in "$@"; do
+        if [ -f "$file" ]; then
+            exiftool -all= -overwrite_original "$file"
+            if [[ "$file" == *.pdf ]]; then
+                qpdf --no-warn --linearize --replace-input "$file"
+            fi
+        else
+            echo "Le fichier '$file' n'existe pas ou n'est pas un fichier régulier."
+        fi
+    done
+}
+```
+
