@@ -56,18 +56,40 @@ MAILTO=""
           DEBIAN_FRONTEND=noninteractive apt full-upgrade -y -qq > /dev/null 2>&1
 ```
 
-# Anonymisation .zshrc
+# Supprimer les métadonnées .zshrc
 
 ```shell
 erasemeta() {
-    for file in "$@"; do
-        if [ -f "$file" ]; then
-            exiftool -all= -overwrite_original "$file"
-            if [[ "$file" == *.pdf ]]; then
-                qpdf --no-warn --linearize --replace-input "$file"
+    for item_path in "$@"; do
+        local base_name
+        base_name=$(basename "$item_path")
+
+        if [[ "$base_name" == ".DS_Store" ]]; then
+            continue
+        fi
+
+        if [ -f "$item_path" ]; then
+            exiftool -all= -overwrite_original "$item_path"
+            if [[ "$item_path" == *.pdf ]]; then
+                qpdf --no-warn --linearize --replace-input "$item_path"
+                local qpdf_backup_file="${item_path}.~qpdf-orig"
+                if [ -f "$qpdf_backup_file" ]; then
+                    rm "$qpdf_backup_file"
+                fi
             fi
+        elif [ -d "$item_path" ]; then
+            find "$item_path" -type f -not -name ".DS_Store" -print0 | while IFS= read -r -d $'\0' file; do
+                exiftool -all= -overwrite_original "$file"
+                if [[ "$file" == *.pdf ]]; then
+                    qpdf --no-warn --linearize --replace-input "$file"
+                    local qpdf_backup_file_in_dir="${file}.~qpdf-orig"
+                    if [ -f "$qpdf_backup_file_in_dir" ]; then
+                        rm "$qpdf_backup_file_in_dir"
+                    fi
+                fi
+            done
         else
-            echo "Le fichier '$file' n'existe pas ou n'est pas un fichier régulier."
+            echo "Le chemin '$item_path' n'existe pas ou n'est pas un fichier ou un répertoire valide."
         fi
     done
 }
