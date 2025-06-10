@@ -6,7 +6,7 @@ locale: "fr_FR"
 permalink: pretty
 baseurl: ""
 disable_disk_cache: true
-highlighter: none
+highlighter: rouge
 author:
   name: "Tristan BRINGUIER"
   url: "https://creeper.fr/"
