@@ -6,7 +6,7 @@ locale: "fr_FR"
 permalink: pretty
 baseurl: ""
 disable_disk_cache: true
-highlighter: none
+highlighter: rouge
 author:
   name: "Tristan BRINGUIER"
   url: "https://creeper.fr/"
@@ -68,3 +68,14 @@ og_image:
       - "#091816"
       - "#004840"
       - "#035a00"
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+    line_numbers: true
+    line_number_start: 1
+    span:
+      line_numbers: true
+    block:
+      line_numbers: true
