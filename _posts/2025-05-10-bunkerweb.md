@@ -75,30 +75,29 @@ De même, **chaque sous-domaine que vous protégerez avec BunkerWeb devra aupara
 **Commencez par créer un fichier** **`compose.yaml`**, **puis** **copiez-y** **le bloc de configuration ci-dessous** :
 
 ```yaml
-###############################################################################
+################################################################################
 ##                          BunkerWeb – Docker Compose                         #
 ## Ce fichier déploie BunkerWeb (reverse-proxy + WAF), son ordonnanceur,       #
-## l’interface Web d’administration et une base MariaDB pour le stockage       #
-## interne. Les réseaux et volumes sont créés automatiquement.                 #
+## l’interface Web d’administration et une base PostgreSQL pour le stockage.   #
 ##                                                                             #
 ## → AVANT DE PASSER EN PROD :                                                 #
-##   - Changez tous les mots de passe « motdepasseachanger ».                  #
-##   - Révisez la liste d’IP autorisées (API_WHITELIST_IP).                    #
-##   - Mettez vos propres certificats TLS ou configurez Let’s Encrypt.         #
-###############################################################################
+##   - Changez le mot de passe « motdepasseachanger »                          #
+##                                                                             #
+## → POUR LE RÉSEAU EXTERNE 'bw-apps' :                                        #
+##   - Créez-le avec : docker network create bw-apps                           #
+################################################################################
 
 ################################ Variables globales ############################
 ## Regroupées sous une ancre YAML (&bw-env) pour pouvoir être ré-utilisées
 ## (« merge key » <<) dans les différents services.
 x-bw-env: &bw-env
   ## Liste d’IP autorisées à appeler l’API interne de BunkerWeb.
+  ## Indiquer le même subnet que celui du réseau « bunker »
   ## Format : réseaux CIDR séparés par des espaces.
   API_WHITELIST_IP: "127.0.0.0/8 10.20.30.0/24"
-
-  ## Chaîne de connexion à la base MariaDB (SQLAlchemy).
-  ## ➜ Changez le mot de passe **et** éventuellement le nom de la base.
-  ##    mariadb+pymysql://utilisateur:motdepasse@hôte:port/base
-  DATABASE_URI: "mariadb+pymysql://bunkerweb:motdepasseachanger@bw-db:3306/db"
+  ## Chaîne de connexion à la base PostgreSQL (SQLAlchemy).
+  ## ➜ Changez le mot de passe.
+  DATABASE_URI: "postgresql://bunkerweb:motdepasseachanger@bw-db:5432/db"
 
 ###############################################################################
 ##                                   Services                                ##
@@ -121,13 +120,14 @@ services:
     restart: unless-stopped             ## Relance sauf si vous l’arrêtez manuellement
     ## ── Réseau ────────────────────────────────────────────────────────────
     networks:
-      - bunker                          ## Place le conteneur sur le réseau « bunker »
+      - bunker                          # Place le conteneur sur le réseau « bunker »
+      - bw-apps                         # Place le conteneur sur le réseau externe « bw-apps »
     ## ── Logs ──────────────────────────────────────────────────────────────
     logging:
       driver: json-file
       options:
         max-size: "10m"                 ## Rotation : 10 Mo par fichier
-        max-file: "5"                   ## Garde 5 fichiers (≈ 50 Mo max)
+        max-file: "10"                   ## Garde 10 fichiers
 
   ###########################################################################
   ## 2. Ordonnanceur (scheduler)                                           ##
@@ -136,10 +136,10 @@ services:
     image: bunkerity/bunkerweb-scheduler:latest
     environment:
       <<: *bw-env
-      BUNKERWEB_INSTANCES: "bunkerweb"   ## Nom du service à piloter
-      SERVER_NAME: ""                    ## Laissez vide si pas de domaine dédié
-      MULTISITE: "yes"                   ## Active la gestion multi-hôtes
-      UI_HOST: "http://bw-ui:7000"       ## Adresse de l’interface UI
+      BUNKERWEB_INSTANCES: "bunkerweb"
+      SERVER_NAME: ""
+      MULTISITE: "yes"
+      UI_HOST: "http://bw-ui:7000"
     volumes:
       - bw-data:/data                    ## Monte les données persistantes (policies, etc.)
     restart: unless-stopped
@@ -157,26 +157,21 @@ services:
     restart: unless-stopped
     networks:
       - bunker                           ## Doit voir le proxy
-      - bunker-db                        ## Doit voir MariaDB
+      - bunker-db                        ## Doit voir PostgreSQL
 
   ###########################################################################
-  ## 4. Base de données MariaDB                                             ##
+  ## 4. Base de données PostgreSQL                                         ##
   ###########################################################################
   bw-db:
-    image: mariadb:11                    ## Version 11.x LTS
+    image: postgres:17
     environment:
-      ## Mot de passe root généré automatiquement (non enregistré dans Compose)
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-
-      ## Création automatique de la base et de l’utilisateur applicatif
-      MYSQL_DATABASE: "db"
-      MYSQL_USER: "bunkerweb"
-
+      POSTGRES_DB: "db"
+      POSTGRES_USER: "bunkerweb"
       ## ☠️ À CHANGER ABSOLUMENT AVANT PROD !
       ##   ➜ Pensez aussi à mettre à jour DATABASE_URI plus haut.
-      MYSQL_PASSWORD: "motdepasseachanger"
+      POSTGRES_PASSWORD: "motdepasseachanger"
     volumes:
-      - bw-dbdata:/var/lib/mysql         ## Persistance des données SQL
+      - bw-dbdata:/var/lib/postgresql/data ## Persistance des données SQL
     restart: unless-stopped
     networks:
       - bunker-db                        ## Isolé du reste pour sécurité
@@ -188,14 +183,21 @@ networks:
   ## Réseau frontal (reverse-proxy, scheduler, UI, etc.)
   bunker:
     name: bunker
-    ipam:                                ## Attribution d’adresse statique possible
+    ipam:
       driver: default
       config:
         - subnet: 10.20.30.0/24          ## Réseau identique à celui autorisé dans BunkerWeb
 
-  ## Réseau backend (UI & scheduler ↔ MariaDB). Non exposé au proxy.
+  ## Réseau backend (UI & scheduler ↔ PostgreSQL). Non exposé au proxy.
   bunker-db:
     name: bunker-db
+
+  ## Réseau pour connecter vos applications backend à BunkerWeb.
+  ## Doit être créé manuellement sur l'hôte Docker avant de lancer ce compose :
+  ## → docker network create bw-apps
+  bw-apps:
+    name: bw-apps
+    external: true
 
 ###############################################################################
 ##                                  Volumes                                  ##
@@ -203,14 +205,18 @@ networks:
 volumes:
   ## Policies, certificats, listes IP, etc.
   bw-data:
-  ## Données SQL de MariaDB
+  ## Données SQL de PostgreSQL
   bw-dbdata:
 ```
 
 **N’oubliez pas de changer le mot de passe** `"motdepasseachanger"` **par un autre aléatoire** 🔐 ! **Vous pouvez également le faire avec la commande suivante** (qui génère un mot de passe aléatoire de 32 caractères et remplace compose.yaml à votre place) :
 
 ```shell
-sed -i -e "s|motdepasseachanger|$(openssl rand -base64 32 | tr -dc 'A-Za-z0-9' | head -c32)|g" -e '/^[[:space:]]*#/d' -e 's/[[:space:]]*#.*//' -e '/^[[:space:]]*$/d' compose.yaml
+sed -i -e "s|motdepasseachanger|$(openssl rand -base64 32 | tr -dc 'A-Za-z0-9' | head -c32)|g" -e '/^\s*#/d' -e 's/\s*#.*$//' compose.yaml
+```
+
+```shell
+docker network create bw-apps
 ```
 
 **Une fois le fichier compose.yaml prêt**, il vous suffit de **`docker compose up -d`** **puis passez à la première configuration via l’interface web** !
