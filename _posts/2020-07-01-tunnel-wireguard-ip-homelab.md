@@ -182,8 +182,8 @@ AllowedIPs = 10.66.66.2/32,fd42:42:42::2/128
 Nous devons simplement **remplacer** **les lignes PostUp et PostDown** **par celles ci-dessous** :
 
 ```bash
-PostUp = iptables -I FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -I FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.66.66.0/24 -j MASQUERADE; iptables -I INPUT -p udp -s 10.66.66.0/24 -j ACCEPT; ip6tables -I FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o ens18 -j MASQUERADE
-PostDown = iptables -D FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -D FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -s 10.66.66.0/24 -j MASQUERADE; iptables -D INPUT -p udp -s 10.66.66.0/24 -j ACCEPT; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o ens18 -j MASQUERADE
+PostUp = iptables -I FORWARD -i ens18 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -I FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o ens18 -s 10.66.66.0/24 -j MASQUERADE; iptables -I INPUT -p udp -s 10.66.66.0/24 -j ACCEPT; ip6tables -I FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o ens18 -j MASQUERADE
+PostDown = iptables -D FORWARD -i ens18 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -D FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o ens18 -s 10.66.66.0/24 -j MASQUERADE; iptables -D INPUT -p udp -s 10.66.66.0/24 -j ACCEPT; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o ens18 -j MASQUERADE
 ```
 
 Voici à quoi ressemble notre **fichier** de configuration **après modification** :
@@ -193,8 +193,8 @@ Voici à quoi ressemble notre **fichier** de configuration **après modification
 Address = 10.66.66.1/24,fd42:42:42::1/64
 ListenPort = 62052
 PrivateKey = qA0nlMcMHLUGLgbsQ7zsVlvg2NartzikMUMJRNwdeVs=
-PostUp = iptables -I FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -I FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.66.66.0/24 -j MASQUERADE; iptables -I INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
-PostDown = iptables -D FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -D FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -s 10.66.66.0/24 -j MASQUERADE; iptables -D INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
+PostUp = iptables -I FORWARD -i ens18 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -I FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o ens18 -s 10.66.66.0/24 -j MASQUERADE; iptables -I INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
+PostDown = iptables -D FORWARD -i ens18 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -D FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o ens18 -s 10.66.66.0/24 -j MASQUERADE; iptables -D INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
 
 ### Client MaVM
 [Peer]
@@ -228,8 +228,8 @@ nano /etc/wireguard/wg0.conf
 Address = 10.66.66.1/24,fd42:42:42::1/64
 ListenPort = 62052
 PrivateKey = qA0nlMcMHLUGLgbsQ7zsVlvg2NartzikMUMJRNwdeVs=
-PostUp = iptables -I FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -I FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.66.66.0/24 -j MASQUERADE; iptables -I INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
-PostDown = iptables -D FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -D FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -s 10.66.66.0/24 -j MASQUERADE; iptables -D INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
+PostUp = iptables -I FORWARD -i ens18 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -I FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o ens18 -s 10.66.66.0/24 -j MASQUERADE; iptables -I INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
+PostDown = iptables -D FORWARD -i ens18 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -D FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o ens18 -s 10.66.66.0/24 -j MASQUERADE; iptables -D INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
 
 ### Client MaVM
 [Peer]
@@ -251,8 +251,8 @@ Voici à quoi ressemble le **fichier modifié** :
 Address = 10.66.66.1/24,fd42:42:42::1/64
 ListenPort = 62052
 PrivateKey = qA0nlMcMHLUGLgbsQ7zsVlvg2NartzikMUMJRNwdeVs=
-PostUp = iptables -I FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -I FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -s 10.66.66.0/24 -j MASQUERADE; iptables -I INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
-PostDown = iptables -D FORWARD -i eth0 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -D FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -s 10.66.66.0/24 -j MASQUERADE; iptables -D INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
+PostUp = iptables -I FORWARD -i ens18 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -I FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -A POSTROUTING -o ens18 -s 10.66.66.0/24 -j MASQUERADE; iptables -I INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
+PostDown = iptables -D FORWARD -i ens18 -o wg0 -s 10.66.66.0/24 -j ACCEPT; iptables -D FORWARD -i wg0 -d 10.66.66.0/24 -j ACCEPT; iptables -t nat -D POSTROUTING -o ens18 -s 10.66.66.0/24 -j MASQUERADE; iptables -D INPUT -p udp -s 10.66.66.0/24 -j ACCEPT
 
 ### Client MaVM
 [Peer]
@@ -346,7 +346,7 @@ curl ifconfig.me
 **Si jamais le profil ne fonctionne pas**, **vérifiez que vous n’avez pas mélangé les adresses IPs** et **relisez la documentation**. Il peut arriver qu’il y ai des soucis de routage sur le VPS HMS. Dans ce cas **voici la commande à exécuter SUR LE VPS HMS** pour **résoudre le problème** :
 
 ```bash
-arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire> -i eth0
+arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire> -i ens18
 ```
 
 **L’IP devrait de nouveau fonctionner !**
@@ -380,7 +380,7 @@ arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire> -i eth0
 2. **Ajouter une nouvelle tâche cron** pour exécuter la commande arping toutes les 5 minutes :
    
    ```bash
-   */5 * * * * for arg in $(< /root/ips); do arping -q -c1 -P $arg -S $arg -i eth0; done
+   */5 * * * * for arg in $(< /root/ips); do arping -q -c1 -P $arg -S $arg -i ens18; done
    ```
    
 3. **Enregistrer et quitter** l'éditeur (`CTRL + X`, puis `Y`, puis `Entrée`).
@@ -396,7 +396,7 @@ arping -q -c1 -P <ip_supplémentaire> -S <ip_supplémentaire> -i eth0
 2. **Vérifier que la commande fonctionne** en l'exécutant manuellement une première fois :
    
    ```bash
-   for arg in $(< /root/ips); do arping -q -c1 -P $arg -S $arg -i eth0; done
+   for arg in $(< /root/ips); do arping -q -c1 -P $arg -S $arg -i ens18; done
    ```
 
 Ces étapes devraient vous permettre de configurer la crontab pour que la commande arping soit exécuté toutes les 5 minutes via une tâche cron, envoyant ainsi des requêtes ARPING pour chaque adresse IP listée dans le fichier `/opt/ips`.
